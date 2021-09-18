@@ -37,7 +37,7 @@ func New(capacity int, elements ...interface{}) (error, *DynamicArray) {
 }
 
 func (dynamicArray *DynamicArray) Append(element interface{}) int {
-	if dynamicArray.capacity <= dynamicArray.size+1 {
+	if dynamicArray.capacity <= (dynamicArray.size + 1) {
 		if dynamicArray.capacity == 0 {
 			dynamicArray.capacity = 1
 		} else {
@@ -67,7 +67,7 @@ func (dynamicArray *DynamicArray) InsertAt(index int, element interface{}) error
 		return errors.New("index you want to add element at must be greater than or equal 0")
 	}
 
-	if dynamicArray.capacity <= dynamicArray.size+1 {
+	if dynamicArray.capacity <= (dynamicArray.size + 1) {
 		if dynamicArray.capacity == 0 {
 			dynamicArray.capacity = 1
 		} else {
@@ -91,6 +91,33 @@ func (dynamicArray *DynamicArray) InsertAt(index int, element interface{}) error
 	dynamicArray.elements[dynamicArray.size] = tempElement
 
 	dynamicArray.size += 1
+
+	return nil
+}
+
+func (dynamicArray *DynamicArray) RemoveAt(index int) error {
+	if dynamicArray.size == 0 {
+		return errors.New("cannot remove from empty array")
+	}
+
+	if index > (dynamicArray.size-1) || index < 0 {
+		return errors.New("index out of range")
+	}
+
+	newArray := make([]interface{}, dynamicArray.size-1)
+
+	counter := 0
+	for val := range dynamicArray.elements {
+		if counter == index {
+			continue
+		}
+		newArray[counter] = val
+		counter += 1
+	}
+
+	dynamicArray.elements = newArray
+	dynamicArray.size -= 1
+	dynamicArray.capacity = dynamicArray.size
 
 	return nil
 }

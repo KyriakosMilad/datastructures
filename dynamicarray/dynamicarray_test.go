@@ -167,3 +167,68 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_RemoveAt(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	type args struct {
+		index int
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "test remove element at specific index",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			args:    args{index: 0},
+			wantErr: false,
+		},
+		{
+			name: "test remove element at index lower than 0",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			args:    args{index: -1},
+			wantErr: true,
+		},
+		{
+			name: "test remove element at index bigger than the DynamicArray size",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			args:    args{index: 3},
+			wantErr: true,
+		},
+		{
+			name: "test remove element from empty array",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{},
+			},
+			args:    args{index: 3},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+
+			if err := dynamicArray.RemoveAt(tt.args.index); (err != nil) != tt.wantErr {
+				t.Errorf("RemoveAt() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
