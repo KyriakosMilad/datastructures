@@ -57,3 +57,40 @@ func (dynamicArray *DynamicArray) Append(element interface{}) int {
 
 	return dynamicArray.size - 1
 }
+
+func (dynamicArray *DynamicArray) InsertAt(index int, element interface{}) error {
+	if index > (dynamicArray.size) {
+		return errors.New("index you want to add the element at is out of range, if you want to add the element at the end of the array try Append() method")
+	}
+
+	if index < 0 {
+		return errors.New("index you want to add element at must be greater than or equal 0")
+	}
+
+	if dynamicArray.capacity <= dynamicArray.size+1 {
+		if dynamicArray.capacity == 0 {
+			dynamicArray.capacity = 1
+		} else {
+			dynamicArray.capacity = dynamicArray.capacity * 2
+		}
+
+		newArray := make([]interface{}, dynamicArray.capacity)
+		for idx, val := range dynamicArray.elements {
+			newArray[idx] = val
+		}
+
+		dynamicArray.elements = newArray
+	}
+
+	tempElement := element
+	for i := index; i < dynamicArray.size; i++ {
+		tempVal := dynamicArray.elements[i]
+		dynamicArray.elements[i] = tempElement
+		tempElement = tempVal
+	}
+	dynamicArray.elements[dynamicArray.size] = tempElement
+
+	dynamicArray.size += 1
+
+	return nil
+}

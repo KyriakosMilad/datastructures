@@ -84,3 +84,86 @@ func TestDynamicArray_Append(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_InsertAt(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	type args struct {
+		index   int
+		element interface{}
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "test insert element with capacity room available",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 3},
+			},
+			args:    args{index: 1, element: 2},
+			wantErr: false,
+		},
+		{
+			name: "test insert element with no capacity room available",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 4},
+			},
+			args:    args{index: 2, element: 3},
+			wantErr: false,
+		},
+		{
+			name: "test insert element at the end",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1},
+			},
+			args:    args{index: 1, element: 2},
+			wantErr: false,
+		},
+		{
+			name: "test insert element at the beginning",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{2},
+			},
+			args:    args{index: 0, element: 1},
+			wantErr: false,
+		},
+		{
+			name: "test insert element with index lower than 0",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{2},
+			},
+			args:    args{index: -1, element: 1},
+			wantErr: true,
+		},
+		{
+			name: "test insert element with index bigger than the DynamicArray size",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{2},
+			},
+			args:    args{index: 2, element: 1},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if err := dynamicArray.InsertAt(tt.args.index, tt.args.element); (err != nil) != tt.wantErr {
+				t.Errorf("InsertAt() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
