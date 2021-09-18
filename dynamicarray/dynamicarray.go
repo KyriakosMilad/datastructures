@@ -4,7 +4,6 @@ package dyanmicarray
 
 import (
 	"errors"
-	"fmt"
 )
 
 type DynamicArray struct {
@@ -14,8 +13,8 @@ type DynamicArray struct {
 }
 
 func New(capacity int, elements ...interface{}) (error, *DynamicArray) {
-	if capacity < 1 {
-		err := errors.New("capacity must be greater than 0")
+	if capacity < 0 {
+		err := errors.New("capacity must be greater than or equal to 0")
 		return err, nil
 	}
 
@@ -39,7 +38,11 @@ func New(capacity int, elements ...interface{}) (error, *DynamicArray) {
 
 func (dynamicArray *DynamicArray) Append(element interface{}) int {
 	if dynamicArray.capacity <= dynamicArray.size+1 {
-		dynamicArray.capacity = dynamicArray.capacity * 2
+		if dynamicArray.capacity == 0 {
+			dynamicArray.capacity = 1
+		} else {
+			dynamicArray.capacity = dynamicArray.capacity * 2
+		}
 
 		newArray := make([]interface{}, dynamicArray.capacity)
 		for idx, val := range dynamicArray.elements {
@@ -48,7 +51,6 @@ func (dynamicArray *DynamicArray) Append(element interface{}) int {
 
 		dynamicArray.elements = newArray
 	}
-	fmt.Println(dynamicArray.capacity, dynamicArray.size)
 
 	dynamicArray.elements[dynamicArray.size] = element
 	dynamicArray.size += 1
