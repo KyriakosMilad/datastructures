@@ -2,7 +2,10 @@
 
 package dyanmicarray
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type DynamicArray struct {
 	capacity int
@@ -32,4 +35,23 @@ func New(capacity int, elements ...interface{}) (error, *DynamicArray) {
 	}
 
 	return nil, &dynamicArray
+}
+
+func (dynamicArray *DynamicArray) Append(element interface{}) int {
+	if dynamicArray.capacity <= dynamicArray.size+1 {
+		dynamicArray.capacity = dynamicArray.capacity * 2
+
+		newArray := make([]interface{}, dynamicArray.capacity)
+		for idx, val := range dynamicArray.elements {
+			newArray[idx] = val
+		}
+
+		dynamicArray.elements = newArray
+	}
+	fmt.Println(dynamicArray.capacity, dynamicArray.size)
+
+	dynamicArray.elements[dynamicArray.size] = element
+	dynamicArray.size += 1
+
+	return dynamicArray.size - 1
 }
