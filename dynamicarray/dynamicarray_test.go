@@ -617,3 +617,59 @@ func TestDynamicArray_Get(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_Set(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	type args struct {
+		index int
+		value interface{}
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "test set element value in DynamicArray by index",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args:    args{index: 0, value: 0},
+			wantErr: false,
+		},
+		{
+			name: "test set element value in DynamicArray by index lower than 0",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args:    args{index: -1, value: 0},
+			wantErr: true,
+		},
+		{
+			name: "test set element value in DynamicArray by index bigger than DynamicArray capacity",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args:    args{index: 3, value: 0},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if err := dynamicArray.Set(tt.args.index, tt.args.value); (err != nil) != tt.wantErr {
+				t.Errorf("Set() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

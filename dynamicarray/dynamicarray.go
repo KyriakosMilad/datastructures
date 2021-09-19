@@ -196,21 +196,30 @@ func (dynamicArray *DynamicArray) Elements() []interface{} {
 	return dynamicArray.elements
 }
 
-func (dynamicArray DynamicArray) Size() int {
+func (dynamicArray *DynamicArray) Size() int {
 	return dynamicArray.size
 }
 
-func (dynamicArray DynamicArray) IsEmpty() bool {
+func (dynamicArray *DynamicArray) IsEmpty() bool {
 	return dynamicArray.size == 0
 }
 
-func (dynamicArray DynamicArray) Capacity() int {
+func (dynamicArray *DynamicArray) Capacity() int {
 	return dynamicArray.capacity
 }
 
-func (dynamicArray DynamicArray) Get(index int) (error, interface{}) {
+func (dynamicArray *DynamicArray) Get(index int) (error, interface{}) {
 	if index < 0 || index > (dynamicArray.size-1) {
 		return errors.New("index out of range"), nil
 	}
 	return nil, dynamicArray.elements[index]
+}
+
+func (dynamicArray *DynamicArray) Set(index int, value interface{}) error {
+	if index < 0 || index > dynamicArray.capacity-1 {
+		return errors.New("index out of range")
+	}
+	dynamicArray.elements[index] = value
+
+	return nil
 }
