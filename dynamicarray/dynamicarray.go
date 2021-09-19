@@ -223,3 +223,13 @@ func (dynamicArray *DynamicArray) Set(index int, value interface{}) error {
 
 	return nil
 }
+
+func (dynamicArray *DynamicArray) IndexOf(element interface{}) int {
+	for idx, val := range dynamicArray.elements {
+		if val == element {
+			return idx
+		}
+	}
+
+	return -1
+}

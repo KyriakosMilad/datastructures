@@ -673,3 +673,49 @@ func TestDynamicArray_Set(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_IndexOf(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	type args struct {
+		element interface{}
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   int
+	}{
+		{
+			name: "test get index of value in DynamicArray",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args: args{element: 3},
+			want: 2,
+		},
+		{
+			name: "test get index of value does not exist in DynamicArray",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args: args{element: 4},
+			want: -1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if got := dynamicArray.IndexOf(tt.args.element); got != tt.want {
+				t.Errorf("IndexOf() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
