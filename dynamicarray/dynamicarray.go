@@ -148,3 +148,28 @@ func (dynamicArray *DynamicArray) RemoveAllWhere(element interface{}) error {
 
 	return nil
 }
+
+func (dynamicArray *DynamicArray) RemoveFirstWhere(element interface{}) error {
+	if dynamicArray.size == 0 {
+		return errors.New("cannot remove from empty array")
+	}
+
+	newArray := make([]interface{}, dynamicArray.capacity)
+
+	counter := 0
+	found := false
+	for val := range dynamicArray.elements {
+		if element == val && found == false {
+			found = true
+			continue
+		}
+		newArray[counter] = val
+		counter += 1
+	}
+
+	dynamicArray.elements = newArray
+	dynamicArray.size -= 1
+	dynamicArray.capacity = dynamicArray.size
+
+	return nil
+}

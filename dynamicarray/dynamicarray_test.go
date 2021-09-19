@@ -297,3 +297,58 @@ func TestDynamicArray_RemoveAllWhere(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_RemoveFirstWhere(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	type args struct {
+		element interface{}
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "test remove one element from DynamicArray",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 2},
+			},
+			args:    args{element: 2},
+			wantErr: false,
+		},
+		{
+			name: "test remove element that does not exist using RemoveFirstWhere() method",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			args:    args{element: 3},
+			wantErr: false,
+		},
+		{
+			name: "test remove element from empty array",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{},
+			},
+			args:    args{element: 3},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if err := dynamicArray.RemoveFirstWhere(tt.args.element); (err != nil) != tt.wantErr {
+				t.Errorf("RemoveFirstWhere() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
