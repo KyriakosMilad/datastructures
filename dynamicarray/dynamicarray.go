@@ -233,3 +233,7 @@ func (dynamicArray *DynamicArray) IndexOf(element interface{}) int {
 
 	return -1
 }
+
+func (dynamicArray *DynamicArray) Contains(element interface{}) bool {
+	return dynamicArray.IndexOf(element) != -1
+}

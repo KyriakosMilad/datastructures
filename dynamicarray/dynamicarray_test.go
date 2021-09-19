@@ -719,3 +719,49 @@ func TestDynamicArray_IndexOf(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_Contains(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	type args struct {
+		element interface{}
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   bool
+	}{
+		{
+			name: "test check if DynamicArray contains element that exists",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			args: args{element: 2},
+			want: true,
+		},
+		{
+			name: "test check if DynamicArray contains element that does not exist",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			args: args{element: 3},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if got := dynamicArray.Contains(tt.args.element); got != tt.want {
+				t.Errorf("Contains() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
