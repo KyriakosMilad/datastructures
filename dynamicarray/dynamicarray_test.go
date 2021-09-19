@@ -352,3 +352,43 @@ func TestDynamicArray_RemoveFirstWhere(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_RemoveLast(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		wantErr bool
+	}{
+		{
+			name: "test remove last element from DynamicArray",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 2},
+			},
+			wantErr: false,
+		},
+		{
+			name: "test remove element from empty array",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{},
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if err := dynamicArray.RemoveLast(); (err != nil) != tt.wantErr {
+				t.Errorf("RemoveLast() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
