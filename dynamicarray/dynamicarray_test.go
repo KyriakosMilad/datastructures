@@ -473,3 +473,43 @@ func TestDynamicArray_Size(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_IsEmpty(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   bool
+	}{
+		{
+			name: "test check if two elements DynamicArray is empty",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			want: false,
+		},
+		{
+			name: "test check if zero elements DynamicArray is empty",
+			fields: fields{
+				capacity: 0,
+				elements: []interface{}{},
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if got := dynamicArray.IsEmpty(); got != tt.want {
+				t.Errorf("IsEmpty() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

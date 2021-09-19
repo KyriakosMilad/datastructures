@@ -199,3 +199,7 @@ func (dynamicArray *DynamicArray) Elements() []interface{} {
 func (dynamicArray DynamicArray) Size() int {
 	return dynamicArray.size
 }
+
+func (dynamicArray DynamicArray) IsEmpty() bool {
+	return dynamicArray.size == 0
+}
