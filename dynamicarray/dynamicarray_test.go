@@ -392,3 +392,44 @@ func TestDynamicArray_RemoveLast(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_Elements(t *testing.T) {
+	type fields struct {
+		capacity int
+		size     int
+		elements []interface{}
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   []interface{}
+	}{
+		{
+			name: "test get DynamicArray elements",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+			want: []interface{}{1, 2},
+		},
+		{
+			name: "test get DynamicArray elements",
+			fields: fields{
+				capacity: 0,
+				elements: []interface{}{},
+			},
+			want: []interface{}{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			if got := dynamicArray.Elements(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Elements() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

@@ -191,3 +191,7 @@ func (dynamicArray *DynamicArray) RemoveLast() error {
 
 	return nil
 }
+
+func (dynamicArray *DynamicArray) Elements() []interface{} {
+	return dynamicArray.elements
+}
