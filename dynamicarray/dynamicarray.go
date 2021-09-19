@@ -207,3 +207,10 @@ func (dynamicArray DynamicArray) IsEmpty() bool {
 func (dynamicArray DynamicArray) Capacity() int {
 	return dynamicArray.capacity
 }
+
+func (dynamicArray DynamicArray) Get(index int) (error, interface{}) {
+	if index < 0 || index > (dynamicArray.size-1) {
+		return errors.New("index out of range"), nil
+	}
+	return nil, dynamicArray.elements[index]
+}

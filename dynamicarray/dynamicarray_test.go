@@ -554,3 +554,66 @@ func TestDynamicArray_Capacity(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_Get(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	type args struct {
+		index int
+	}
+	tests := []struct {
+		name          string
+		fields        fields
+		args          args
+		want          interface{}
+		errorExpected bool
+	}{
+		{
+			name: "test get element from DynamicArray by index",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args:          args{index: 0},
+			want:          1,
+			errorExpected: false,
+		},
+		{
+			name: "test get element from DynamicArray by index lower than 0",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args:          args{index: -1},
+			want:          nil,
+			errorExpected: true,
+		},
+		{
+			name: "test get element from DynamicArray by index bigger than DynamicArray size",
+			fields: fields{
+				capacity: 3,
+				elements: []interface{}{1, 2, 3},
+			},
+			args:          args{index: 3},
+			want:          nil,
+			errorExpected: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			err, value := dynamicArray.Get(tt.args.index)
+			if (err != nil) != tt.errorExpected {
+				t.Errorf("Get() error = %v, wantErr %v", err, tt.errorExpected)
+			}
+			if !reflect.DeepEqual(value, tt.want) {
+				t.Errorf("Get() got = %v, want %v", value, tt.want)
+			}
+		})
+	}
+}
