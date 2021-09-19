@@ -237,3 +237,8 @@ func (dynamicArray *DynamicArray) IndexOf(element interface{}) int {
 func (dynamicArray *DynamicArray) Contains(element interface{}) bool {
 	return dynamicArray.IndexOf(element) != -1
 }
+
+func (dynamicArray *DynamicArray) Clear() {
+	dynamicArray.elements = make([]interface{}, dynamicArray.capacity)
+	dynamicArray.size = 0
+}

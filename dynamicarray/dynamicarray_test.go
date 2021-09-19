@@ -765,3 +765,34 @@ func TestDynamicArray_Contains(t *testing.T) {
 		})
 	}
 }
+
+func TestDynamicArray_Clear(t *testing.T) {
+	type fields struct {
+		capacity int
+		elements []interface{}
+	}
+	tests := []struct {
+		name   string
+		fields fields
+	}{
+		{
+			name: "test clear DynamicArray",
+			fields: fields{
+				capacity: 2,
+				elements: []interface{}{1, 2},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err, dynamicArray := New(tt.fields.capacity, tt.fields.elements...)
+			if err != nil {
+				t.Errorf("can't make new dynamic array, error: %v", err)
+			}
+			dynamicArray.Clear()
+			if dynamicArray.size > 0 {
+				t.Errorf("err: DynamicArray is not clear")
+			}
+		})
+	}
+}
