@@ -203,3 +203,7 @@ func (dynamicArray DynamicArray) Size() int {
 func (dynamicArray DynamicArray) IsEmpty() bool {
 	return dynamicArray.size == 0
 }
+
+func (dynamicArray DynamicArray) Capacity() int {
+	return dynamicArray.capacity
+}
