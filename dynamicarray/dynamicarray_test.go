@@ -11,29 +11,88 @@ func TestDynamicArray_New(t *testing.T) {
 		elements []interface{}
 	}
 	tests := []struct {
-		name             string
-		args             args
-		errorExpected    error
-		wantDynamicArray bool
+		name                 string
+		args                 args
+		errorExpected        bool
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test create new dynamicArray",
 			args: args{
-				capacity: 10,
-				elements: []interface{}{'a', 'b', 'c'},
+				capacity: 5,
+				elements: []interface{}{1, 2, 3},
 			},
-			errorExpected:    nil,
+			errorExpected:    false,
 			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 5,
+				size:     3,
+				elements: []interface{}{1, 2, 3, nil, nil},
+			},
+		},
+		{
+			name: "test create new dynamicArray with zero elements",
+			args: args{
+				capacity: 3,
+				elements: []interface{}{},
+			},
+			errorExpected:    false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 3,
+				size:     0,
+				elements: []interface{}{nil, nil, nil},
+			},
+		},
+		{
+			name: "test create new dynamicArray with capacity lower than 0",
+			args: args{
+				capacity: -1,
+				elements: []interface{}{1, 2, 3},
+			},
+			errorExpected:    true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
+		},
+		{
+			name: "test create new dynamicArray with capacity lower than number of elements",
+			args: args{
+				capacity: 2,
+				elements: []interface{}{1, 2, 3},
+			},
+			errorExpected:    true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err, da := New(tt.args.capacity, tt.args.elements...)
-			if !reflect.DeepEqual(err, tt.errorExpected) {
+			err, dynamicArray := New(tt.args.capacity, tt.args.elements...)
+			if (err != nil) != tt.errorExpected {
 				t.Errorf("New() error = %v, want %v", err, tt.errorExpected)
 			}
-			if (da != nil) != tt.wantDynamicArray {
-				t.Errorf("New() dynamicArrayReturned = %v, want %v", da != nil, tt.wantDynamicArray)
+
+			if (dynamicArray != nil) != tt.wantDynamicArray {
+				t.Errorf("New() dynamicArrayReturned = %v, want %v", dynamicArray != nil, tt.wantDynamicArray)
+			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}
@@ -48,10 +107,12 @@ func TestDynamicArray_Append(t *testing.T) {
 		element interface{}
 	}
 	tests := []struct {
-		name          string
-		fields        fields
-		args          args
-		indexExpected int
+		name                 string
+		fields               fields
+		args                 args
+		indexExpected        int
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test append element with capacity room available",
@@ -59,8 +120,14 @@ func TestDynamicArray_Append(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1},
 			},
-			args:          args{element: 2},
-			indexExpected: 1,
+			args:             args{element: 2},
+			indexExpected:    1,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     2,
+				elements: []interface{}{1, 2},
+			},
 		},
 		{
 			name: "test append element with no capacity room available",
@@ -68,8 +135,14 @@ func TestDynamicArray_Append(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1, 2},
 			},
-			args:          args{element: 3},
-			indexExpected: 2,
+			args:             args{element: 3},
+			indexExpected:    2,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 4,
+				size:     3,
+				elements: []interface{}{1, 2, 3, nil},
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -78,8 +151,19 @@ func TestDynamicArray_Append(t *testing.T) {
 			if err != nil {
 				t.Errorf("can't make new dynamic array, error: %v", err)
 			}
+
 			if got := dynamicArray.Append(tt.args.element); got != tt.indexExpected {
 				t.Errorf("Append() = %v, indexExpected %v", got, tt.indexExpected)
+			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}
@@ -95,10 +179,12 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 		element interface{}
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
+		name                 string
+		fields               fields
+		args                 args
+		wantErr              bool
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test insert element with capacity room available",
@@ -106,8 +192,14 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 				capacity: 3,
 				elements: []interface{}{1, 3},
 			},
-			args:    args{index: 1, element: 2},
-			wantErr: false,
+			args:             args{index: 1, element: 2},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 3,
+				size:     3,
+				elements: []interface{}{1, 2, 3},
+			},
 		},
 		{
 			name: "test insert element with no capacity room available",
@@ -115,8 +207,14 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 				capacity: 3,
 				elements: []interface{}{1, 2, 4},
 			},
-			args:    args{index: 2, element: 3},
-			wantErr: false,
+			args:             args{index: 2, element: 3},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 6,
+				size:     4,
+				elements: []interface{}{1, 2, 3, 4, nil, nil},
+			},
 		},
 		{
 			name: "test insert element at the end",
@@ -124,8 +222,14 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1},
 			},
-			args:    args{index: 1, element: 2},
-			wantErr: false,
+			args:             args{index: 1, element: 2},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     2,
+				elements: []interface{}{1, 2},
+			},
 		},
 		{
 			name: "test insert element at the beginning",
@@ -133,8 +237,14 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{2},
 			},
-			args:    args{index: 0, element: 1},
-			wantErr: false,
+			args:             args{index: 0, element: 1},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     2,
+				elements: []interface{}{1, 2},
+			},
 		},
 		{
 			name: "test insert element with index lower than 0",
@@ -142,8 +252,14 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{2},
 			},
-			args:    args{index: -1, element: 1},
-			wantErr: true,
+			args:             args{index: -1, element: 1},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 		{
 			name: "test insert element with index bigger than the DynamicArray size",
@@ -151,8 +267,14 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{2},
 			},
-			args:    args{index: 2, element: 1},
-			wantErr: true,
+			args:             args{index: 2, element: 1},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -161,8 +283,19 @@ func TestDynamicArray_InsertAt(t *testing.T) {
 			if err != nil {
 				t.Errorf("can't make new dynamic array, error: %v", err)
 			}
+
 			if err := dynamicArray.InsertAt(tt.args.index, tt.args.element); (err != nil) != tt.wantErr {
 				t.Errorf("InsertAt() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}
@@ -177,10 +310,12 @@ func TestDynamicArray_RemoveAt(t *testing.T) {
 		index int
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
+		name                 string
+		fields               fields
+		args                 args
+		wantErr              bool
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test remove element at specific index",
@@ -188,8 +323,14 @@ func TestDynamicArray_RemoveAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1, 2},
 			},
-			args:    args{index: 0},
-			wantErr: false,
+			args:             args{index: 0},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 1,
+				size:     1,
+				elements: []interface{}{2},
+			},
 		},
 		{
 			name: "test remove element at index lower than 0",
@@ -197,8 +338,14 @@ func TestDynamicArray_RemoveAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1, 2},
 			},
-			args:    args{index: -1},
-			wantErr: true,
+			args:             args{index: -1},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 		{
 			name: "test remove element at index bigger than the DynamicArray size",
@@ -206,8 +353,14 @@ func TestDynamicArray_RemoveAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1, 2},
 			},
-			args:    args{index: 3},
-			wantErr: true,
+			args:             args{index: 3},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 		{
 			name: "test remove element from empty array",
@@ -215,8 +368,14 @@ func TestDynamicArray_RemoveAt(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{},
 			},
-			args:    args{index: 3},
-			wantErr: true,
+			args:             args{index: 3},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -228,6 +387,16 @@ func TestDynamicArray_RemoveAt(t *testing.T) {
 
 			if err := dynamicArray.RemoveAt(tt.args.index); (err != nil) != tt.wantErr {
 				t.Errorf("RemoveAt() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}
@@ -242,19 +411,27 @@ func TestDynamicArray_RemoveAllWhere(t *testing.T) {
 		element interface{}
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
+		name                 string
+		fields               fields
+		args                 args
+		wantErr              bool
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test remove multiple elements from DynamicArray",
 			fields: fields{
-				capacity: 3,
+				capacity: 4,
 				elements: []interface{}{1, 2, 2},
 			},
-			args:    args{element: 2},
-			wantErr: false,
+			args:             args{element: 2},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 1,
+				size:     1,
+				elements: []interface{}{1},
+			},
 		},
 		{
 			name: "test remove one element from DynamicArray using RemoveAllWhere() method",
@@ -262,8 +439,14 @@ func TestDynamicArray_RemoveAllWhere(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1, 2},
 			},
-			args:    args{element: 2},
-			wantErr: false,
+			args:             args{element: 2},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 1,
+				size:     1,
+				elements: []interface{}{1},
+			},
 		},
 		{
 			name: "test remove element that does not exist using RemoveAllWhere() method",
@@ -271,8 +454,14 @@ func TestDynamicArray_RemoveAllWhere(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1, 2},
 			},
-			args:    args{element: 3},
-			wantErr: false,
+			args:             args{element: 3},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     2,
+				elements: []interface{}{1, 2},
+			},
 		},
 		{
 			name: "test remove element from empty array",
@@ -280,8 +469,14 @@ func TestDynamicArray_RemoveAllWhere(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{},
 			},
-			args:    args{element: 3},
-			wantErr: true,
+			args:             args{element: 3},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -293,6 +488,16 @@ func TestDynamicArray_RemoveAllWhere(t *testing.T) {
 
 			if err := dynamicArray.RemoveAllWhere(tt.args.element); (err != nil) != tt.wantErr {
 				t.Errorf("RemoveAllWhere() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}
@@ -307,10 +512,12 @@ func TestDynamicArray_RemoveFirstWhere(t *testing.T) {
 		element interface{}
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
+		name                 string
+		fields               fields
+		args                 args
+		wantErr              bool
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test remove one element from DynamicArray",
@@ -318,8 +525,14 @@ func TestDynamicArray_RemoveFirstWhere(t *testing.T) {
 				capacity: 3,
 				elements: []interface{}{1, 2, 2},
 			},
-			args:    args{element: 2},
-			wantErr: false,
+			args:             args{element: 2},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     2,
+				elements: []interface{}{1, 2},
+			},
 		},
 		{
 			name: "test remove element that does not exist using RemoveFirstWhere() method",
@@ -327,8 +540,14 @@ func TestDynamicArray_RemoveFirstWhere(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{1, 2},
 			},
-			args:    args{element: 3},
-			wantErr: false,
+			args:             args{element: 3},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     2,
+				elements: []interface{}{1, 2},
+			},
 		},
 		{
 			name: "test remove element from empty array",
@@ -336,8 +555,14 @@ func TestDynamicArray_RemoveFirstWhere(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{},
 			},
-			args:    args{element: 3},
-			wantErr: true,
+			args:             args{element: 3},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -349,6 +574,16 @@ func TestDynamicArray_RemoveFirstWhere(t *testing.T) {
 			if err := dynamicArray.RemoveFirstWhere(tt.args.element); (err != nil) != tt.wantErr {
 				t.Errorf("RemoveFirstWhere() error = %v, wantErr %v", err, tt.wantErr)
 			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
+			}
 		})
 	}
 }
@@ -359,9 +594,11 @@ func TestDynamicArray_RemoveLast(t *testing.T) {
 		elements []interface{}
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		wantErr bool
+		name                 string
+		fields               fields
+		wantErr              bool
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test remove last element from DynamicArray",
@@ -369,7 +606,13 @@ func TestDynamicArray_RemoveLast(t *testing.T) {
 				capacity: 3,
 				elements: []interface{}{1, 2, 2},
 			},
-			wantErr: false,
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     2,
+				elements: []interface{}{1, 2},
+			},
 		},
 		{
 			name: "test remove element from empty array",
@@ -377,7 +620,13 @@ func TestDynamicArray_RemoveLast(t *testing.T) {
 				capacity: 2,
 				elements: []interface{}{},
 			},
-			wantErr: true,
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -386,8 +635,19 @@ func TestDynamicArray_RemoveLast(t *testing.T) {
 			if err != nil {
 				t.Errorf("can't make new dynamic array, error: %v", err)
 			}
+
 			if err := dynamicArray.RemoveLast(); (err != nil) != tt.wantErr {
 				t.Errorf("RemoveLast() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}
@@ -396,7 +656,6 @@ func TestDynamicArray_RemoveLast(t *testing.T) {
 func TestDynamicArray_Elements(t *testing.T) {
 	type fields struct {
 		capacity int
-		size     int
 		elements []interface{}
 	}
 	tests := []struct {
@@ -628,10 +887,12 @@ func TestDynamicArray_Set(t *testing.T) {
 		value interface{}
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
+		name                 string
+		fields               fields
+		args                 args
+		wantErr              bool
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test set element value in DynamicArray by index",
@@ -639,8 +900,14 @@ func TestDynamicArray_Set(t *testing.T) {
 				capacity: 3,
 				elements: []interface{}{1, 2, 3},
 			},
-			args:    args{index: 0, value: 0},
-			wantErr: false,
+			args:             args{index: 0, value: 0},
+			wantErr:          false,
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 3,
+				size:     3,
+				elements: []interface{}{0, 2, 3},
+			},
 		},
 		{
 			name: "test set element value in DynamicArray by index lower than 0",
@@ -648,8 +915,14 @@ func TestDynamicArray_Set(t *testing.T) {
 				capacity: 3,
 				elements: []interface{}{1, 2, 3},
 			},
-			args:    args{index: -1, value: 0},
-			wantErr: true,
+			args:             args{index: -1, value: 0},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 		{
 			name: "test set element value in DynamicArray by index bigger than DynamicArray capacity",
@@ -657,8 +930,14 @@ func TestDynamicArray_Set(t *testing.T) {
 				capacity: 3,
 				elements: []interface{}{1, 2, 3},
 			},
-			args:    args{index: 3, value: 0},
-			wantErr: true,
+			args:             args{index: 3, value: 0},
+			wantErr:          true,
+			wantDynamicArray: false,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 0,
+				size:     0,
+				elements: nil,
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -667,8 +946,19 @@ func TestDynamicArray_Set(t *testing.T) {
 			if err != nil {
 				t.Errorf("can't make new dynamic array, error: %v", err)
 			}
+
 			if err := dynamicArray.Set(tt.args.index, tt.args.value); (err != nil) != tt.wantErr {
 				t.Errorf("Set() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}
@@ -772,14 +1062,22 @@ func TestDynamicArray_Clear(t *testing.T) {
 		elements []interface{}
 	}
 	tests := []struct {
-		name   string
-		fields fields
+		name                 string
+		fields               fields
+		wantDynamicArray     bool
+		dynamicArrayExpected DynamicArray
 	}{
 		{
 			name: "test clear DynamicArray",
 			fields: fields{
 				capacity: 2,
 				elements: []interface{}{1, 2},
+			},
+			wantDynamicArray: true,
+			dynamicArrayExpected: DynamicArray{
+				capacity: 2,
+				size:     0,
+				elements: []interface{}{},
 			},
 		},
 	}
@@ -789,9 +1087,17 @@ func TestDynamicArray_Clear(t *testing.T) {
 			if err != nil {
 				t.Errorf("can't make new dynamic array, error: %v", err)
 			}
+
 			dynamicArray.Clear()
-			if dynamicArray.size > 0 {
-				t.Errorf("err: DynamicArray is not clear")
+
+			if (dynamicArray != nil) && (dynamicArray.size != tt.dynamicArrayExpected.size) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array size expected, got = %v, expected %v", dynamicArray.size, tt.dynamicArrayExpected.size)
+			}
+			if (dynamicArray != nil) && (dynamicArray.capacity != tt.dynamicArrayExpected.capacity) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array capacity expected, got = %v, expected %v", dynamicArray.capacity, tt.dynamicArrayExpected.capacity)
+			}
+			if (dynamicArray != nil) && (len(dynamicArray.elements) == len(tt.dynamicArrayExpected.elements)) && (len(dynamicArray.elements) == 0) && !reflect.DeepEqual(dynamicArray.elements, tt.dynamicArrayExpected.elements) && tt.wantDynamicArray {
+				t.Errorf("New() wrong dynamic array elements expected, got = %v, expected %v", dynamicArray.elements, tt.dynamicArrayExpected.elements)
 			}
 		})
 	}

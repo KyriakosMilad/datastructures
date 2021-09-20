@@ -37,10 +37,10 @@ func New(capacity int, elements ...interface{}) (error, *DynamicArray) {
 }
 
 func (dynamicArray *DynamicArray) Append(element interface{}) int {
-	if dynamicArray.capacity <= (dynamicArray.size + 1) {
+	if dynamicArray.capacity < (dynamicArray.size + 1) {
 		if dynamicArray.capacity == 0 {
 			dynamicArray.capacity = 1
-		} else {
+		} else if dynamicArray.capacity == dynamicArray.size {
 			dynamicArray.capacity = dynamicArray.capacity * 2
 		}
 
@@ -67,10 +67,10 @@ func (dynamicArray *DynamicArray) InsertAt(index int, element interface{}) error
 		return errors.New("index you want to add element at must be greater than or equal 0")
 	}
 
-	if dynamicArray.capacity <= (dynamicArray.size + 1) {
+	if dynamicArray.capacity < (dynamicArray.size + 1) {
 		if dynamicArray.capacity == 0 {
 			dynamicArray.capacity = 1
-		} else {
+		} else if dynamicArray.capacity == dynamicArray.size {
 			dynamicArray.capacity = dynamicArray.capacity * 2
 		}
 
@@ -107,7 +107,7 @@ func (dynamicArray *DynamicArray) RemoveAt(index int) error {
 	newArray := make([]interface{}, dynamicArray.size-1)
 
 	counter := 0
-	for val := range dynamicArray.elements {
+	for _, val := range dynamicArray.elements {
 		if counter == index {
 			continue
 		}
@@ -128,24 +128,30 @@ func (dynamicArray *DynamicArray) RemoveAllWhere(element interface{}) error {
 	}
 
 	tempArray := make([]interface{}, dynamicArray.capacity)
+	capacityCounter := dynamicArray.capacity
 	counter := 0
-	for val := range dynamicArray.elements {
-		if element == val {
+	for _, val := range dynamicArray.elements {
+		if val == element || val == nil {
+			capacityCounter -= 1
 			continue
 		}
 		tempArray[counter] = val
 		counter += 1
 	}
 
-	newArray := make([]interface{}, len(tempArray))
-	for idx, val := range tempArray {
-		newArray[idx] = val
+	newArray := make([]interface{}, capacityCounter)
+	counter = 0
+	for _, val := range tempArray {
+		if val == nil {
+			continue
+		}
+		newArray[counter] = val
+		counter += 1
 	}
 
 	dynamicArray.elements = newArray
-	dynamicArray.size = len(tempArray)
+	dynamicArray.size = len(newArray)
 	dynamicArray.capacity = dynamicArray.size
-
 	return nil
 }
 
@@ -158,7 +164,7 @@ func (dynamicArray *DynamicArray) RemoveFirstWhere(element interface{}) error {
 
 	counter := 0
 	found := false
-	for val := range dynamicArray.elements {
+	for _, val := range dynamicArray.elements {
 		if element == val && found == false {
 			found = true
 			continue
@@ -168,7 +174,9 @@ func (dynamicArray *DynamicArray) RemoveFirstWhere(element interface{}) error {
 	}
 
 	dynamicArray.elements = newArray
-	dynamicArray.size -= 1
+	if found == true {
+		dynamicArray.size -= 1
+	}
 	dynamicArray.capacity = dynamicArray.size
 
 	return nil
