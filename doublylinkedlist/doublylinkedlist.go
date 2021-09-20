@@ -5,3 +5,9 @@ type Node struct {
 	prev  *Node
 	value interface{}
 }
+
+type DoublyLinkedList struct {
+	head *Node
+	tail *Node
+	size int
+}
