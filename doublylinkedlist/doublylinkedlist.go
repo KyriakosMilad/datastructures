@@ -15,3 +15,7 @@ type DoublyLinkedList struct {
 func (dll *DoublyLinkedList) Size() int {
 	return dll.size
 }
+
+func (dll *DoublyLinkedList) IsEmpty() bool {
+	return dll.size == 0
+}
