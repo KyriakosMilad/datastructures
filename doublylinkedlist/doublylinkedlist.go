@@ -11,3 +11,7 @@ type DoublyLinkedList struct {
 	tail *Node
 	size int
 }
+
+func (dll *DoublyLinkedList) Size() int {
+	return dll.size
+}
