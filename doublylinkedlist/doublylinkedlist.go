@@ -57,3 +57,11 @@ func (dll *DoublyLinkedList) Head() (error, interface{}) {
 
 	return nil, dll.head.value
 }
+
+func (dll *DoublyLinkedList) Tail() (error, interface{}) {
+	if dll.IsEmpty() {
+		return errors.New("can't get the head of empty doubly linked list"), nil
+	}
+
+	return nil, dll.tail.value
+}

@@ -165,3 +165,50 @@ func TestDoublyLinkedList_Head(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_Tail(t *testing.T) {
+	type fields struct {
+		head *Node
+		tail *Node
+		size int
+	}
+	tests := []struct {
+		name          string
+		fields        fields
+		errorExpected bool
+		want          interface{}
+	}{
+		{
+			name: "test get the tail from DoublyLinkedList",
+			fields: fields{
+				tail: &Node{value: 50},
+				size: 1,
+			},
+			errorExpected: false,
+			want:          50,
+		},
+		{
+			name: "test get the tail from empty DoublyLinkedList",
+			fields: fields{
+				tail: &Node{value: 50},
+			},
+			errorExpected: true,
+			want:          nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{
+				tail: tt.fields.tail,
+				size: tt.fields.size,
+			}
+			err, got := dll.Tail()
+			if (err != nil) != tt.errorExpected {
+				t.Errorf("Tail() error = %v, want %v", err, tt.errorExpected)
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Tail() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
