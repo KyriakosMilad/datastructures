@@ -1,6 +1,9 @@
 package doublylinkedlist
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestDoublyLinkedList_Size(t *testing.T) {
 	type fields struct {
@@ -111,6 +114,53 @@ func TestDoublyLinkedList_AddLast(t *testing.T) {
 			dll.AddFirst(tt.args.val)
 			if dll.tail.value != tt.args.val {
 				t.Errorf("AddLast() = %v, want %v", dll.tail.value, tt.args.val)
+			}
+		})
+	}
+}
+
+func TestDoublyLinkedList_Head(t *testing.T) {
+	type fields struct {
+		head *Node
+		tail *Node
+		size int
+	}
+	tests := []struct {
+		name          string
+		fields        fields
+		errorExpected bool
+		want          interface{}
+	}{
+		{
+			name: "test get the head from DoublyLinkedList",
+			fields: fields{
+				head: &Node{value: 50},
+				size: 1,
+			},
+			errorExpected: false,
+			want:          50,
+		},
+		{
+			name: "test get the head from empty DoublyLinkedList",
+			fields: fields{
+				head: &Node{value: 50},
+			},
+			errorExpected: true,
+			want:          nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{
+				head: tt.fields.head,
+				size: tt.fields.size,
+			}
+			err, got := dll.Head()
+			if (err != nil) != tt.errorExpected {
+				t.Errorf("Head() error = %v, want %v", err, tt.errorExpected)
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Head() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

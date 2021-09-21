@@ -1,5 +1,7 @@
 package doublylinkedlist
 
+import "errors"
+
 type Node struct {
 	next  *Node
 	prev  *Node
@@ -46,4 +48,12 @@ func (dll *DoublyLinkedList) AddLast(val interface{}) {
 	}
 
 	dll.size += 1
+}
+
+func (dll *DoublyLinkedList) Head() (error, interface{}) {
+	if dll.IsEmpty() {
+		return errors.New("can't get the head of empty doubly linked list"), nil
+	}
+
+	return nil, dll.head.value
 }
