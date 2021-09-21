@@ -44,10 +44,16 @@ func (dll *DoublyLinkedList) AddFirst(val interface{}) {
 
 func (dll *DoublyLinkedList) AddLast(val interface{}) {
 	newNode := &Node{value: val}
-	if dll.IsEmpty() {
-		dll.tail = newNode
+
+	switch dll.size {
+	case 0:
 		dll.head = newNode
-	} else {
+		dll.tail = newNode
+	case 1:
+		dll.tail = newNode
+		dll.tail.prev = dll.head
+		dll.head.next = dll.tail
+	default:
 		newNode.prev = dll.tail
 		dll.tail.next = newNode
 		dll.tail = newNode
