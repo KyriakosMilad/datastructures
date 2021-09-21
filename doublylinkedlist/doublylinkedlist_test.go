@@ -67,3 +67,27 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_AddFirst(t *testing.T) {
+	type args struct {
+		val interface{}
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "test add node at the beginning of the DoublyLinkedList",
+			args: args{val: 5},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{}
+			dll.AddFirst(tt.args.val)
+			if dll.head.value != tt.args.val {
+				t.Errorf("AddFirst() = %v, want %v", dll.head.value, tt.args.val)
+			}
+		})
+	}
+}
