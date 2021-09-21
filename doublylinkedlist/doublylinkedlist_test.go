@@ -91,3 +91,27 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_AddLast(t *testing.T) {
+	type args struct {
+		val interface{}
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "test add node at the end of the DoublyLinkedList",
+			args: args{val: 8},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{}
+			dll.AddFirst(tt.args.val)
+			if dll.tail.value != tt.args.val {
+				t.Errorf("AddLast() = %v, want %v", dll.tail.value, tt.args.val)
+			}
+		})
+	}
+}

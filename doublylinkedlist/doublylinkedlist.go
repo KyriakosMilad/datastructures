@@ -33,3 +33,17 @@ func (dll *DoublyLinkedList) AddFirst(val interface{}) {
 
 	dll.size += 1
 }
+
+func (dll *DoublyLinkedList) AddLast(val interface{}) {
+	newNode := &Node{value: val}
+	if dll.IsEmpty() {
+		dll.tail = newNode
+		dll.head = newNode
+	} else {
+		newNode.prev = dll.tail
+		dll.tail.next = newNode
+		dll.tail = newNode
+	}
+
+	dll.size += 1
+}
