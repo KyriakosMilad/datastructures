@@ -91,3 +91,7 @@ func (dll *DoublyLinkedList) IndexOfNode(node *Node) int {
 
 	return -1
 }
+
+func (dll *DoublyLinkedList) ContainsNode(node *Node) bool {
+	return dll.IndexOfNode(node) != -1
+}
