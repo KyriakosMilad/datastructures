@@ -212,3 +212,57 @@ func TestDoublyLinkedList_Tail(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_IndexOfNode(t *testing.T) {
+	node1 := &Node{
+		value: 1,
+	}
+	node2 := &Node{
+		value: 2,
+	}
+	node3 := &Node{
+		value: 3,
+	}
+	node1.next = node2
+	node2.prev = node1
+	node2.next = node3
+	node3.prev = node2
+
+	type fields struct {
+		head *Node
+		tail *Node
+		size int
+	}
+	type args struct {
+		node *Node
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   int
+	}{
+		{
+			name: "test get the index of node in DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node2,
+				size: 3,
+			},
+			args: args{node: node2},
+			want: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{
+				head: tt.fields.head,
+				tail: tt.fields.tail,
+				size: tt.fields.size,
+			}
+			if got := dll.IndexOfNode(tt.args.node); got != tt.want {
+				t.Errorf("IndexOfNode() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

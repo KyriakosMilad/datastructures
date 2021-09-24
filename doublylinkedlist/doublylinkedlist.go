@@ -77,3 +77,17 @@ func (dll *DoublyLinkedList) Tail() (error, interface{}) {
 
 	return nil, dll.tail.value
 }
+
+func (dll *DoublyLinkedList) IndexOfNode(node *Node) int {
+	counter := 0
+	traverser := dll.head
+	for traverser != nil {
+		if traverser == node {
+			return counter
+		}
+		counter += 1
+		traverser = traverser.next
+	}
+
+	return -1
+}
