@@ -109,3 +109,7 @@ func (dll *DoublyLinkedList) IndexOfValue(val interface{}) int {
 
 	return -1
 }
+
+func (dll *DoublyLinkedList) ContainsValue(val interface{}) bool {
+	return dll.IndexOfValue(val) != -1
+}
