@@ -88,6 +88,26 @@ func TestDoublyLinkedList_Size(t *testing.T) {
 }
 
 func TestDoublyLinkedList_IsEmpty(t *testing.T) {
+	node1 := &Node{
+		value: 1,
+	}
+	node2 := &Node{
+		value: 2,
+	}
+	node3 := &Node{
+		value: 3,
+	}
+	node4 := &Node{
+		value: 4,
+	}
+	node5 := &Node{
+		value: 5,
+	}
+	node3.next = node4
+	node4.prev = node3
+	node4.next = node5
+	node5.prev = node4
+
 	type fields struct {
 		head *Node
 		tail *Node
@@ -99,13 +119,40 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 		want   bool
 	}{
 		{
-			name: "test check if empty DoublyLinkedList is empty",
+			name: "test get size from empty DoublyLinkedList",
 			fields: fields{
 				head: nil,
 				tail: nil,
 				size: 0,
 			},
 			want: true,
+		},
+		{
+			name: "test get size from one element DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node1,
+				size: 1,
+			},
+			want: false,
+		},
+		{
+			name: "test get size from two element DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node2,
+				size: 2,
+			},
+			want: false,
+		},
+		{
+			name: "test get size from +2 element DoublyLinkedList",
+			fields: fields{
+				head: node3,
+				tail: node5,
+				size: 3,
+			},
+			want: false,
 		},
 	}
 	for _, tt := range tests {
