@@ -46,7 +46,7 @@ func TestDoublyLinkedList_Size(t *testing.T) {
 			want: 0,
 		},
 		{
-			name: "test get size from one element DoublyLinkedList",
+			name: "test get size from one node DoublyLinkedList",
 			fields: fields{
 				head: node1,
 				tail: node1,
@@ -55,7 +55,7 @@ func TestDoublyLinkedList_Size(t *testing.T) {
 			want: 1,
 		},
 		{
-			name: "test get size from two element DoublyLinkedList",
+			name: "test get size from two nodes DoublyLinkedList",
 			fields: fields{
 				head: node1,
 				tail: node2,
@@ -64,7 +64,7 @@ func TestDoublyLinkedList_Size(t *testing.T) {
 			want: 2,
 		},
 		{
-			name: "test get size from +2 element DoublyLinkedList",
+			name: "test get size from +2 nodes DoublyLinkedList",
 			fields: fields{
 				head: node3,
 				tail: node5,
@@ -128,7 +128,7 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "test get size from one element DoublyLinkedList",
+			name: "test get size from one node DoublyLinkedList",
 			fields: fields{
 				head: node1,
 				tail: node1,
@@ -137,7 +137,7 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "test get size from two element DoublyLinkedList",
+			name: "test get size from two nodes DoublyLinkedList",
 			fields: fields{
 				head: node1,
 				tail: node2,
@@ -146,7 +146,7 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "test get size from +2 element DoublyLinkedList",
+			name: "test get size from +2 nodes DoublyLinkedList",
 			fields: fields{
 				head: node3,
 				tail: node5,
@@ -194,7 +194,7 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 			},
 		},
 		{
-			name: "test add node at the beginning of one element DoublyLinkedList",
+			name: "test add node at the beginning of one node DoublyLinkedList",
 			args: args{val: 0},
 			dll: DoublyLinkedList{
 				head: node1,
@@ -208,7 +208,7 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 			},
 		},
 		{
-			name: "test add node at the beginning of two element DoublyLinkedList",
+			name: "test add node at the beginning of two nodes DoublyLinkedList",
 			args: args{val: 2},
 			dll: DoublyLinkedList{
 				head: &Node{value: 3},
