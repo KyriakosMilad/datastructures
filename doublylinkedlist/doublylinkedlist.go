@@ -95,3 +95,17 @@ func (dll *DoublyLinkedList) IndexOfNode(node *Node) int {
 func (dll *DoublyLinkedList) ContainsNode(node *Node) bool {
 	return dll.IndexOfNode(node) != -1
 }
+
+func (dll *DoublyLinkedList) IndexOfValue(val interface{}) int {
+	counter := 0
+	traverser := dll.head
+	for traverser != nil {
+		if traverser.value == val {
+			return counter
+		}
+		counter += 1
+		traverser = traverser.next
+	}
+
+	return -1
+}

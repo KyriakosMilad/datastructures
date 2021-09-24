@@ -330,3 +330,57 @@ func TestDoublyLinkedList_ContainsNode(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_IndexOfValue(t *testing.T) {
+	node1 := &Node{
+		value: 1,
+	}
+	node2 := &Node{
+		value: 2,
+	}
+	node3 := &Node{
+		value: 3,
+	}
+	node1.next = node2
+	node2.prev = node1
+	node2.next = node3
+	node3.prev = node2
+
+	type fields struct {
+		head *Node
+		tail *Node
+		size int
+	}
+	type args struct {
+		val interface{}
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   int
+	}{
+		{
+			name: "test get the index of value in DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node2,
+				size: 3,
+			},
+			args: args{val: 2},
+			want: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{
+				head: tt.fields.head,
+				tail: tt.fields.tail,
+				size: tt.fields.size,
+			}
+			if got := dll.IndexOfValue(tt.args.val); got != tt.want {
+				t.Errorf("IndexOfValue() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
