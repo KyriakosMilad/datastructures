@@ -6,6 +6,26 @@ import (
 )
 
 func TestDoublyLinkedList_Size(t *testing.T) {
+	node1 := &Node{
+		value: 1,
+	}
+	node2 := &Node{
+		value: 2,
+	}
+	node3 := &Node{
+		value: 3,
+	}
+	node4 := &Node{
+		value: 4,
+	}
+	node5 := &Node{
+		value: 5,
+	}
+	node3.next = node4
+	node4.prev = node3
+	node4.next = node5
+	node5.prev = node4
+
 	type fields struct {
 		head *Node
 		tail *Node
@@ -25,10 +45,41 @@ func TestDoublyLinkedList_Size(t *testing.T) {
 			},
 			want: 0,
 		},
+		{
+			name: "test get size from one element DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node1,
+				size: 1,
+			},
+			want: 1,
+		},
+		{
+			name: "test get size from two element DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node2,
+				size: 2,
+			},
+			want: 2,
+		},
+		{
+			name: "test get size from +2 element DoublyLinkedList",
+			fields: fields{
+				head: node3,
+				tail: node5,
+				size: 3,
+			},
+			want: 3,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dll := &DoublyLinkedList{}
+			dll := &DoublyLinkedList{
+				head: tt.fields.head,
+				tail: tt.fields.tail,
+				size: tt.fields.size,
+			}
 			if got := dll.Size(); got != tt.want {
 				t.Errorf("Size() = %v, want %v", got, tt.want)
 			}
