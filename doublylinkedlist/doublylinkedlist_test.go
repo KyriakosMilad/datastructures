@@ -170,24 +170,69 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 }
 
 func TestDoublyLinkedList_AddFirst(t *testing.T) {
+	node1 := &Node{
+		value: 1,
+	}
+
 	type args struct {
 		val interface{}
 	}
 	tests := []struct {
-		name string
-		args args
+		name        string
+		args        args
+		dll         DoublyLinkedList
+		expectedDll DoublyLinkedList
 	}{
 		{
-			name: "test add node at the beginning of the DoublyLinkedList",
-			args: args{val: 5},
+			name: "test add node at the beginning of empty DoublyLinkedList",
+			args: args{val: 0},
+			dll:  DoublyLinkedList{},
+			expectedDll: DoublyLinkedList{
+				head: &Node{value: 0},
+				tail: &Node{value: 0},
+				size: 1,
+			},
+		},
+		{
+			name: "test add node at the beginning of one element DoublyLinkedList",
+			args: args{val: 0},
+			dll: DoublyLinkedList{
+				head: node1,
+				tail: node1,
+				size: 1,
+			},
+			expectedDll: DoublyLinkedList{
+				head: &Node{value: 0},
+				tail: &Node{value: 1},
+				size: 2,
+			},
+		},
+		{
+			name: "test add node at the beginning of two element DoublyLinkedList",
+			args: args{val: 2},
+			dll: DoublyLinkedList{
+				head: &Node{value: 3},
+				tail: &Node{value: 6},
+				size: 2,
+			},
+			expectedDll: DoublyLinkedList{
+				head: &Node{value: 2},
+				tail: &Node{value: 6},
+				size: 3,
+			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dll := &DoublyLinkedList{}
-			dll.AddFirst(tt.args.val)
-			if dll.head.value != tt.args.val {
-				t.Errorf("AddFirst() = %v, want %v", dll.head.value, tt.args.val)
+			tt.dll.AddFirst(tt.args.val)
+			if tt.dll.head.value != tt.expectedDll.head.value {
+				t.Errorf("AddFirst(): head = %v, want %v", tt.dll.head.value, tt.expectedDll.head.value)
+			}
+			if tt.dll.tail.value != tt.expectedDll.tail.value {
+				t.Errorf("AddFirst(): tail = %v, want %v", tt.dll.tail.value, tt.expectedDll.tail.value)
+			}
+			if tt.dll.size != tt.expectedDll.size {
+				t.Errorf("AddFirst(): size = %v, want %v", tt.dll.size, tt.expectedDll.size)
 			}
 		})
 	}
