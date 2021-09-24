@@ -239,24 +239,69 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 }
 
 func TestDoublyLinkedList_AddLast(t *testing.T) {
+	node1 := &Node{
+		value: 1,
+	}
+
 	type args struct {
 		val interface{}
 	}
 	tests := []struct {
-		name string
-		args args
+		name        string
+		args        args
+		dll         DoublyLinkedList
+		expectedDll DoublyLinkedList
 	}{
 		{
-			name: "test add node at the end of the DoublyLinkedList",
-			args: args{val: 8},
+			name: "test add node at the end of empty DoublyLinkedList",
+			args: args{val: 0},
+			dll:  DoublyLinkedList{},
+			expectedDll: DoublyLinkedList{
+				head: &Node{value: 0},
+				tail: &Node{value: 0},
+				size: 1,
+			},
+		},
+		{
+			name: "test add node at the end of one node DoublyLinkedList",
+			args: args{val: 2},
+			dll: DoublyLinkedList{
+				head: node1,
+				tail: node1,
+				size: 1,
+			},
+			expectedDll: DoublyLinkedList{
+				head: &Node{value: 1},
+				tail: &Node{value: 2},
+				size: 2,
+			},
+		},
+		{
+			name: "test add node at the end of two nodes DoublyLinkedList",
+			args: args{val: 7},
+			dll: DoublyLinkedList{
+				head: &Node{value: 3},
+				tail: &Node{value: 6},
+				size: 2,
+			},
+			expectedDll: DoublyLinkedList{
+				head: &Node{value: 3},
+				tail: &Node{value: 7},
+				size: 3,
+			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dll := &DoublyLinkedList{}
-			dll.AddFirst(tt.args.val)
-			if dll.tail.value != tt.args.val {
-				t.Errorf("AddLast() = %v, want %v", dll.tail.value, tt.args.val)
+			tt.dll.AddLast(tt.args.val)
+			if tt.dll.head.value != tt.expectedDll.head.value {
+				t.Errorf("AddFirst(): head = %v, want %v", tt.dll.head.value, tt.expectedDll.head.value)
+			}
+			if tt.dll.tail.value != tt.expectedDll.tail.value {
+				t.Errorf("AddFirst(): tail = %v, want %v", tt.dll.tail.value, tt.expectedDll.tail.value)
+			}
+			if tt.dll.size != tt.expectedDll.size {
+				t.Errorf("AddFirst(): size = %v, want %v", tt.dll.size, tt.expectedDll.size)
 			}
 		})
 	}
