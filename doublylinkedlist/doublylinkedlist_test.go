@@ -594,6 +594,16 @@ func TestDoublyLinkedList_IndexOfValue(t *testing.T) {
 			args: args{val: 2},
 			want: 1,
 		},
+		{
+			name: "test get the index of non-exist value in DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node2,
+				size: 3,
+			},
+			args: args{val: 6},
+			want: -1,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
