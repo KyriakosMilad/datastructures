@@ -368,6 +368,10 @@ func TestDoublyLinkedList_Head(t *testing.T) {
 }
 
 func TestDoublyLinkedList_Tail(t *testing.T) {
+	node1 := &Node{
+		value: 1,
+	}
+
 	type fields struct {
 		head *Node
 		tail *Node
@@ -380,21 +384,30 @@ func TestDoublyLinkedList_Tail(t *testing.T) {
 		want          interface{}
 	}{
 		{
-			name: "test get the tail from DoublyLinkedList",
-			fields: fields{
-				tail: &Node{value: 50},
-				size: 1,
-			},
-			errorExpected: false,
-			want:          50,
-		},
-		{
-			name: "test get the tail from empty DoublyLinkedList",
-			fields: fields{
-				tail: &Node{value: 50},
-			},
+			name:          "test get the tail from empty DoublyLinkedList",
+			fields:        fields{},
 			errorExpected: true,
 			want:          nil,
+		},
+		{
+			name: "test get the tail from one node DoublyLinkedList",
+			fields: fields{
+				head: node1,
+				tail: node1,
+				size: 1,
+			},
+			want:          1,
+			errorExpected: false,
+		},
+		{
+			name: "test get the tail from two nodes DoublyLinkedList",
+			fields: fields{
+				head: &Node{value: 3},
+				tail: &Node{value: 6},
+				size: 2,
+			},
+			want:          6,
+			errorExpected: false,
 		},
 	}
 	for _, tt := range tests {
