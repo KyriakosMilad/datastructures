@@ -113,3 +113,27 @@ func (dll *DoublyLinkedList) IndexOfValue(val interface{}) int {
 func (dll *DoublyLinkedList) ContainsValue(val interface{}) bool {
 	return dll.IndexOfValue(val) != -1
 }
+
+func (dll *DoublyLinkedList) RemoveFirst() error {
+	switch dll.size {
+	case 0:
+		return errors.New("can't remove from empty doubly linked list")
+	case 1:
+		dll.head.value = nil
+		dll.tail = nil
+		dll.head = nil
+	case 2:
+		dll.head.value = nil
+		dll.head = dll.tail
+		dll.head.prev = nil
+		dll.head.next = nil
+	default:
+		dll.head.value = nil
+		dll.head = dll.head.next
+		dll.head.prev = nil
+	}
+
+	dll.size -= 1
+
+	return nil
+}

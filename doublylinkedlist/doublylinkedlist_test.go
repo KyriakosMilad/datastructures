@@ -682,3 +682,86 @@ func TestDoublyLinkedList_ContainsValue(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_RemoveFirst(t *testing.T) {
+	tests := []struct {
+		name    string
+		size    int
+		wantErr bool
+	}{
+		{
+			name:    "test remove first from empty DoublyLinkedList",
+			size:    0,
+			wantErr: true,
+		},
+		{
+			name:    "test remove first from one node DoublyLinkedList",
+			size:    1,
+			wantErr: false,
+		},
+		{
+			name:    "test remove first from two nodes DoublyLinkedList",
+			size:    2,
+			wantErr: false,
+		},
+		{
+			name:    "test remove first from three nodes DoublyLinkedList",
+			size:    3,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{}
+			switch tt.size {
+			case 0:
+				dll.size = 0
+			case 1:
+				node1 := &Node{
+					value: 1,
+				}
+				dll.size = 1
+				dll.head = node1
+				dll.tail = node1
+			case 2:
+				node1 := &Node{
+					value: 1,
+				}
+				node2 := &Node{
+					value: 2,
+				}
+
+				dll.size = 2
+				dll.head = node1
+				dll.tail = node2
+			case 3:
+				node1 := &Node{
+					value: 1,
+				}
+				node2 := &Node{
+					value: 2,
+				}
+				node3 := &Node{
+					value: 3,
+				}
+				node1.next = node2
+				node2.prev = node1
+				node2.next = node3
+				node3.prev = node2
+
+				dll.size = 3
+				dll.head = node1
+				dll.tail = node3
+			}
+			tempHead := dll.head
+
+			if err := dll.RemoveFirst(); (err != nil) != tt.wantErr {
+				t.Errorf("RemoveFirst() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if tt.size > 0 && tempHead == dll.head {
+				t.Errorf("RemoveFirst() not working got = %v, want %v", dll.head, tempHead.next)
+			}
+		})
+	}
+}
