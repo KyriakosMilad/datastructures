@@ -6,19 +6,19 @@ import (
 )
 
 func TestDoublyLinkedList_Size(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
-	node2 := &Node{
+	node2 := &node{
 		value: 2,
 	}
-	node3 := &Node{
+	node3 := &node{
 		value: 3,
 	}
-	node4 := &Node{
+	node4 := &node{
 		value: 4,
 	}
-	node5 := &Node{
+	node5 := &node{
 		value: 5,
 	}
 	node3.next = node4
@@ -27,8 +27,8 @@ func TestDoublyLinkedList_Size(t *testing.T) {
 	node5.prev = node4
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	tests := []struct {
@@ -88,19 +88,19 @@ func TestDoublyLinkedList_Size(t *testing.T) {
 }
 
 func TestDoublyLinkedList_IsEmpty(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
-	node2 := &Node{
+	node2 := &node{
 		value: 2,
 	}
-	node3 := &Node{
+	node3 := &node{
 		value: 3,
 	}
-	node4 := &Node{
+	node4 := &node{
 		value: 4,
 	}
-	node5 := &Node{
+	node5 := &node{
 		value: 5,
 	}
 	node3.next = node4
@@ -109,8 +109,8 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 	node5.prev = node4
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	tests := []struct {
@@ -170,7 +170,7 @@ func TestDoublyLinkedList_IsEmpty(t *testing.T) {
 }
 
 func TestDoublyLinkedList_AddFirst(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
 
@@ -188,8 +188,8 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 			args: args{val: 0},
 			dll:  DoublyLinkedList{},
 			expectedDll: DoublyLinkedList{
-				head: &Node{value: 0},
-				tail: &Node{value: 0},
+				head: &node{value: 0},
+				tail: &node{value: 0},
 				size: 1,
 			},
 		},
@@ -202,8 +202,8 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 				size: 1,
 			},
 			expectedDll: DoublyLinkedList{
-				head: &Node{value: 0},
-				tail: &Node{value: 1},
+				head: &node{value: 0},
+				tail: &node{value: 1},
 				size: 2,
 			},
 		},
@@ -211,13 +211,13 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 			name: "test add node at the beginning of two nodes DoublyLinkedList",
 			args: args{val: 2},
 			dll: DoublyLinkedList{
-				head: &Node{value: 3},
-				tail: &Node{value: 6},
+				head: &node{value: 3},
+				tail: &node{value: 6},
 				size: 2,
 			},
 			expectedDll: DoublyLinkedList{
-				head: &Node{value: 2},
-				tail: &Node{value: 6},
+				head: &node{value: 2},
+				tail: &node{value: 6},
 				size: 3,
 			},
 		},
@@ -239,7 +239,7 @@ func TestDoublyLinkedList_AddFirst(t *testing.T) {
 }
 
 func TestDoublyLinkedList_AddLast(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
 
@@ -257,8 +257,8 @@ func TestDoublyLinkedList_AddLast(t *testing.T) {
 			args: args{val: 0},
 			dll:  DoublyLinkedList{},
 			expectedDll: DoublyLinkedList{
-				head: &Node{value: 0},
-				tail: &Node{value: 0},
+				head: &node{value: 0},
+				tail: &node{value: 0},
 				size: 1,
 			},
 		},
@@ -271,8 +271,8 @@ func TestDoublyLinkedList_AddLast(t *testing.T) {
 				size: 1,
 			},
 			expectedDll: DoublyLinkedList{
-				head: &Node{value: 1},
-				tail: &Node{value: 2},
+				head: &node{value: 1},
+				tail: &node{value: 2},
 				size: 2,
 			},
 		},
@@ -280,13 +280,13 @@ func TestDoublyLinkedList_AddLast(t *testing.T) {
 			name: "test add node at the end of two nodes DoublyLinkedList",
 			args: args{val: 7},
 			dll: DoublyLinkedList{
-				head: &Node{value: 3},
-				tail: &Node{value: 6},
+				head: &node{value: 3},
+				tail: &node{value: 6},
 				size: 2,
 			},
 			expectedDll: DoublyLinkedList{
-				head: &Node{value: 3},
-				tail: &Node{value: 7},
+				head: &node{value: 3},
+				tail: &node{value: 7},
 				size: 3,
 			},
 		},
@@ -308,13 +308,13 @@ func TestDoublyLinkedList_AddLast(t *testing.T) {
 }
 
 func TestDoublyLinkedList_Head(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	tests := []struct {
@@ -342,8 +342,8 @@ func TestDoublyLinkedList_Head(t *testing.T) {
 		{
 			name: "test get the head from two nodes DoublyLinkedList",
 			fields: fields{
-				head: &Node{value: 3},
-				tail: &Node{value: 6},
+				head: &node{value: 3},
+				tail: &node{value: 6},
 				size: 2,
 			},
 			want:          3,
@@ -368,13 +368,13 @@ func TestDoublyLinkedList_Head(t *testing.T) {
 }
 
 func TestDoublyLinkedList_Tail(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	tests := []struct {
@@ -402,8 +402,8 @@ func TestDoublyLinkedList_Tail(t *testing.T) {
 		{
 			name: "test get the tail from two nodes DoublyLinkedList",
 			fields: fields{
-				head: &Node{value: 3},
-				tail: &Node{value: 6},
+				head: &node{value: 3},
+				tail: &node{value: 6},
 				size: 2,
 			},
 			want:          6,
@@ -428,13 +428,13 @@ func TestDoublyLinkedList_Tail(t *testing.T) {
 }
 
 func TestDoublyLinkedList_IndexOfNode(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
-	node2 := &Node{
+	node2 := &node{
 		value: 2,
 	}
-	node3 := &Node{
+	node3 := &node{
 		value: 3,
 	}
 	node1.next = node2
@@ -443,12 +443,12 @@ func TestDoublyLinkedList_IndexOfNode(t *testing.T) {
 	node3.prev = node2
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	type args struct {
-		node *Node
+		node *node
 	}
 	tests := []struct {
 		name   string
@@ -473,7 +473,7 @@ func TestDoublyLinkedList_IndexOfNode(t *testing.T) {
 				tail: node2,
 				size: 3,
 			},
-			args: args{node: &Node{}},
+			args: args{node: &node{}},
 			want: -1,
 		},
 	}
@@ -492,13 +492,13 @@ func TestDoublyLinkedList_IndexOfNode(t *testing.T) {
 }
 
 func TestDoublyLinkedList_ContainsNode(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
-	node2 := &Node{
+	node2 := &node{
 		value: 2,
 	}
-	node3 := &Node{
+	node3 := &node{
 		value: 3,
 	}
 	node1.next = node2
@@ -507,12 +507,12 @@ func TestDoublyLinkedList_ContainsNode(t *testing.T) {
 	node3.prev = node2
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	type args struct {
-		node *Node
+		node *node
 	}
 	tests := []struct {
 		name   string
@@ -527,7 +527,7 @@ func TestDoublyLinkedList_ContainsNode(t *testing.T) {
 				tail: node2,
 				size: 3,
 			},
-			args: args{node: &Node{}},
+			args: args{node: &node{}},
 			want: false,
 		},
 		{
@@ -556,13 +556,13 @@ func TestDoublyLinkedList_ContainsNode(t *testing.T) {
 }
 
 func TestDoublyLinkedList_IndexOfValue(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
-	node2 := &Node{
+	node2 := &node{
 		value: 2,
 	}
-	node3 := &Node{
+	node3 := &node{
 		value: 3,
 	}
 	node1.next = node2
@@ -571,8 +571,8 @@ func TestDoublyLinkedList_IndexOfValue(t *testing.T) {
 	node3.prev = node2
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	type args struct {
@@ -620,13 +620,13 @@ func TestDoublyLinkedList_IndexOfValue(t *testing.T) {
 }
 
 func TestDoublyLinkedList_ContainsValue(t *testing.T) {
-	node1 := &Node{
+	node1 := &node{
 		value: 1,
 	}
-	node2 := &Node{
+	node2 := &node{
 		value: 2,
 	}
-	node3 := &Node{
+	node3 := &node{
 		value: 3,
 	}
 	node1.next = node2
@@ -635,8 +635,8 @@ func TestDoublyLinkedList_ContainsValue(t *testing.T) {
 	node3.prev = node2
 
 	type fields struct {
-		head *Node
-		tail *Node
+		head *node
+		tail *node
 		size int
 	}
 	type args struct {
@@ -717,17 +717,17 @@ func TestDoublyLinkedList_RemoveFirst(t *testing.T) {
 			case 0:
 				dll.size = 0
 			case 1:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
 				dll.size = 1
 				dll.head = node1
 				dll.tail = node1
 			case 2:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
 
@@ -737,13 +737,13 @@ func TestDoublyLinkedList_RemoveFirst(t *testing.T) {
 				dll.head.next = dll.tail
 				dll.tail.prev = dll.head
 			case 3:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
-				node3 := &Node{
+				node3 := &node{
 					value: 3,
 				}
 				node1.next = node2
@@ -802,17 +802,17 @@ func TestDoublyLinkedList_RemoveLast(t *testing.T) {
 			case 0:
 				dll.size = 0
 			case 1:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
 				dll.size = 1
 				dll.head = node1
 				dll.tail = node1
 			case 2:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
 
@@ -822,13 +822,13 @@ func TestDoublyLinkedList_RemoveLast(t *testing.T) {
 				dll.head.next = dll.tail
 				dll.tail.prev = dll.head
 			case 3:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
-				node3 := &Node{
+				node3 := &node{
 					value: 3,
 				}
 				node1.next = node2
@@ -883,13 +883,13 @@ func TestDoublyLinkedList_Remove(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			dll := &DoublyLinkedList{}
-			var nodeToDelete *Node
+			var nodeToDelete *node
 			switch tt.size {
 			case 0:
 				dll.size = 0
-				nodeToDelete = &Node{value: 0}
+				nodeToDelete = &node{value: 0}
 			case 1:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
 				dll.size = 1
@@ -898,10 +898,10 @@ func TestDoublyLinkedList_Remove(t *testing.T) {
 
 				nodeToDelete = node1
 			case 2:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
 
@@ -913,13 +913,13 @@ func TestDoublyLinkedList_Remove(t *testing.T) {
 
 				nodeToDelete = node2
 			case 3:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
-				node3 := &Node{
+				node3 := &node{
 					value: 3,
 				}
 				node1.next = node2
@@ -998,13 +998,13 @@ func TestDoublyLinkedList_RemoveAt(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			dll := &DoublyLinkedList{}
-			var nodeToDelete *Node
+			var nodeToDelete *node
 
 			switch tt.size {
 			case 0:
 				dll.size = 0
 			case 1:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
 				dll.size = 1
@@ -1013,10 +1013,10 @@ func TestDoublyLinkedList_RemoveAt(t *testing.T) {
 
 				nodeToDelete = node1
 			case 2:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
 
@@ -1033,13 +1033,13 @@ func TestDoublyLinkedList_RemoveAt(t *testing.T) {
 					nodeToDelete = node2
 				}
 			case 3:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
-				node3 := &Node{
+				node3 := &node{
 					value: 3,
 				}
 				node1.next = node2
@@ -1101,17 +1101,17 @@ func TestDoublyLinkedList_Clear(t *testing.T) {
 			case 0:
 				dll.size = 0
 			case 1:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
 				dll.size = 1
 				dll.head = node1
 				dll.tail = node1
 			case 2:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
 
@@ -1121,13 +1121,13 @@ func TestDoublyLinkedList_Clear(t *testing.T) {
 				dll.head.next = dll.tail
 				dll.tail.prev = dll.head
 			case 3:
-				node1 := &Node{
+				node1 := &node{
 					value: 1,
 				}
-				node2 := &Node{
+				node2 := &node{
 					value: 2,
 				}
-				node3 := &Node{
+				node3 := &node{
 					value: 3,
 				}
 				node1.next = node2

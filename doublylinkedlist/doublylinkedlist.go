@@ -2,15 +2,15 @@ package doublylinkedlist
 
 import "errors"
 
-type Node struct {
-	next  *Node
-	prev  *Node
+type node struct {
+	next  *node
+	prev  *node
 	value interface{}
 }
 
 type DoublyLinkedList struct {
-	head *Node
-	tail *Node
+	head *node
+	tail *node
 	size int
 }
 
@@ -23,7 +23,7 @@ func (dll *DoublyLinkedList) IsEmpty() bool {
 }
 
 func (dll *DoublyLinkedList) AddFirst(val interface{}) {
-	newNode := &Node{value: val}
+	newNode := &node{value: val}
 
 	switch dll.size {
 	case 0:
@@ -43,7 +43,7 @@ func (dll *DoublyLinkedList) AddFirst(val interface{}) {
 }
 
 func (dll *DoublyLinkedList) AddLast(val interface{}) {
-	newNode := &Node{value: val}
+	newNode := &node{value: val}
 
 	switch dll.size {
 	case 0:
@@ -78,7 +78,7 @@ func (dll *DoublyLinkedList) Tail() (error, interface{}) {
 	return nil, dll.tail.value
 }
 
-func (dll *DoublyLinkedList) IndexOfNode(node *Node) int {
+func (dll *DoublyLinkedList) IndexOfNode(node *node) int {
 	counter := 0
 	traverser := dll.head
 	for traverser != nil {
@@ -92,7 +92,7 @@ func (dll *DoublyLinkedList) IndexOfNode(node *Node) int {
 	return -1
 }
 
-func (dll *DoublyLinkedList) ContainsNode(node *Node) bool {
+func (dll *DoublyLinkedList) ContainsNode(node *node) bool {
 	return dll.IndexOfNode(node) != -1
 }
 
@@ -162,7 +162,7 @@ func (dll *DoublyLinkedList) RemoveLast() error {
 	return nil
 }
 
-func (dll *DoublyLinkedList) Remove(node *Node) error {
+func (dll *DoublyLinkedList) Remove(node *node) error {
 	if !dll.ContainsNode(node) {
 		return errors.New("this node does not belong to this DoublyLinkedList")
 	}
