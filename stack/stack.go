@@ -21,3 +21,7 @@ func (s *Stack) Pop() error {
 func (s *Stack) Peek() (error, interface{}) {
 	return s.list.Tail()
 }
+
+func (s *Stack) Size() int {
+	return s.list.Size()
+}

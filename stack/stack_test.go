@@ -65,3 +65,17 @@ func TestStack_Peek(t *testing.T) {
 		}
 	})
 }
+
+func TestStack_Size(t *testing.T) {
+	t.Run("test get the size of the stack", func(t *testing.T) {
+		s := New()
+
+		val := 2
+		s.Push(val)
+
+		size := s.Size()
+		if size != 1 {
+			t.Errorf("Size() not working, got = %v, want = %v", size, 1)
+		}
+	})
+}
