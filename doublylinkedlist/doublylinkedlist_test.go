@@ -1071,3 +1071,86 @@ func TestDoublyLinkedList_RemoveAt(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_Clear(t *testing.T) {
+	tests := []struct {
+		name string
+		size int
+	}{
+		{
+			name: "test clear empty DoublyLinkedList",
+			size: 0,
+		},
+		{
+			name: "test clear one node DoublyLinkedList",
+			size: 1,
+		},
+		{
+			name: "test clear two nodes DoublyLinkedList",
+			size: 2,
+		},
+		{
+			name: "test clear three nodes DoublyLinkedList",
+			size: 3,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{}
+			switch tt.size {
+			case 0:
+				dll.size = 0
+			case 1:
+				node1 := &Node{
+					value: 1,
+				}
+				dll.size = 1
+				dll.head = node1
+				dll.tail = node1
+			case 2:
+				node1 := &Node{
+					value: 1,
+				}
+				node2 := &Node{
+					value: 2,
+				}
+
+				dll.size = 2
+				dll.head = node1
+				dll.tail = node2
+				dll.head.next = dll.tail
+				dll.tail.prev = dll.head
+			case 3:
+				node1 := &Node{
+					value: 1,
+				}
+				node2 := &Node{
+					value: 2,
+				}
+				node3 := &Node{
+					value: 3,
+				}
+				node1.next = node2
+				node2.prev = node1
+				node2.next = node3
+				node3.prev = node2
+
+				dll.size = 3
+				dll.head = node1
+				dll.tail = node3
+			}
+
+			dll.Clear()
+
+			if dll.size > 0 {
+				t.Errorf("Clear() not working size = %v, want %v", dll.size, 0)
+			}
+			if dll.head != nil {
+				t.Errorf("Clear() not working head = %v, want %v", dll.head, nil)
+			}
+			if dll.tail != nil {
+				t.Errorf("Clear() not working tail = %v, want %v", dll.tail, nil)
+			}
+		})
+	}
+}

@@ -206,3 +206,17 @@ func (dll *DoublyLinkedList) RemoveAt(index int) error {
 
 	return nil
 }
+
+func (dll *DoublyLinkedList) Clear() {
+	traverser := dll.head
+	for traverser != nil {
+		next := traverser.next
+		traverser.value = nil
+		traverser.prev = nil
+		traverser.next = nil
+		dll.size -= 1
+		traverser = next
+	}
+	dll.head = nil
+	dll.tail = nil
+}
