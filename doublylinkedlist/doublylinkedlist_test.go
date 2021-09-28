@@ -734,6 +734,8 @@ func TestDoublyLinkedList_RemoveFirst(t *testing.T) {
 				dll.size = 2
 				dll.head = node1
 				dll.tail = node2
+				dll.head.next = dll.tail
+				dll.tail.prev = dll.head
 			case 3:
 				node1 := &Node{
 					value: 1,
