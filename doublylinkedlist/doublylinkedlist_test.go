@@ -944,3 +944,130 @@ func TestDoublyLinkedList_Remove(t *testing.T) {
 		})
 	}
 }
+
+func TestDoublyLinkedList_RemoveAt(t *testing.T) {
+	tests := []struct {
+		name    string
+		size    int
+		index   int
+		wantErr bool
+	}{
+		{
+			name:    "test remove node with index 0 from empty DoublyLinkedList",
+			size:    0,
+			index:   0,
+			wantErr: true,
+		},
+		{
+			name:    "test remove node with index -1 from one node DoublyLinkedList",
+			size:    1,
+			index:   -1,
+			wantErr: true,
+		},
+		{
+			name:    "test remove node from DoublyLinkedList with index bigger than the DoublyLinkedList size",
+			size:    0,
+			index:   1,
+			wantErr: true,
+		},
+		{
+			name:    "test remove node with index 0 from one node DoublyLinkedList",
+			size:    1,
+			index:   0,
+			wantErr: false,
+		},
+		{
+			name:    "test remove node with index 0 from two nodes DoublyLinkedList",
+			size:    2,
+			index:   1,
+			wantErr: false,
+		},
+		{
+			name:    "test remove node with index 1 from two nodes DoublyLinkedList",
+			size:    2,
+			index:   1,
+			wantErr: false,
+		},
+		{
+			name:    "test remove node with index 1 from three nodes DoublyLinkedList",
+			size:    3,
+			index:   1,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dll := &DoublyLinkedList{}
+			var nodeToDelete *Node
+
+			switch tt.size {
+			case 0:
+				dll.size = 0
+			case 1:
+				node1 := &Node{
+					value: 1,
+				}
+				dll.size = 1
+				dll.head = node1
+				dll.tail = node1
+
+				nodeToDelete = node1
+			case 2:
+				node1 := &Node{
+					value: 1,
+				}
+				node2 := &Node{
+					value: 2,
+				}
+
+				dll.size = 2
+				dll.head = node1
+				dll.tail = node2
+				dll.head.next = dll.tail
+				dll.tail.prev = dll.head
+
+				switch tt.index {
+				case 0:
+					nodeToDelete = node1
+				case 1:
+					nodeToDelete = node2
+				}
+			case 3:
+				node1 := &Node{
+					value: 1,
+				}
+				node2 := &Node{
+					value: 2,
+				}
+				node3 := &Node{
+					value: 3,
+				}
+				node1.next = node2
+				node2.prev = node1
+				node2.next = node3
+				node3.prev = node2
+
+				dll.size = 3
+				dll.head = node1
+				dll.tail = node3
+
+				switch tt.index {
+				case 0:
+					nodeToDelete = node1
+				case 1:
+					nodeToDelete = node2
+				case 2:
+					nodeToDelete = node3
+				}
+			}
+
+			if err := dll.RemoveAt(tt.index); (err != nil) != tt.wantErr {
+				t.Errorf("RemoveAt() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if tt.index > -1 && dll.ContainsNode(nodeToDelete) {
+				t.Errorf("RemoveAt() not working can not delete node %v", nodeToDelete)
+			}
+		})
+	}
+}

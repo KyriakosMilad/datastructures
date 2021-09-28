@@ -185,3 +185,24 @@ func (dll *DoublyLinkedList) Remove(node *Node) error {
 
 	return nil
 }
+
+func (dll *DoublyLinkedList) RemoveAt(index int) error {
+	if dll.size == 0 {
+		return errors.New("can't remove from empty doubly linked list")
+	}
+	if index < 0 || index > dll.size {
+		return errors.New("index out of range")
+	}
+
+	counter := 0
+	traverser := dll.head
+	for traverser != nil {
+		if counter == index {
+			return dll.Remove(traverser)
+		}
+		counter += 1
+		traverser = traverser.next
+	}
+
+	return nil
+}
