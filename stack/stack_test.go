@@ -48,3 +48,20 @@ func TestStack_Pop(t *testing.T) {
 		}
 	})
 }
+
+func TestStack_Peek(t *testing.T) {
+	t.Run("test get last element from the stack", func(t *testing.T) {
+		s := New()
+
+		val := 2
+		s.Push(val)
+
+		err, lastElement := s.Peek()
+		if err != nil {
+			t.Errorf("Peek() gotError = %v", err)
+		}
+		if lastElement != val {
+			t.Errorf("Peek() not working, got = %v, want = %v", lastElement, val)
+		}
+	})
+}

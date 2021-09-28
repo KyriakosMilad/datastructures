@@ -17,3 +17,7 @@ func (s *Stack) Push(value interface{}) {
 func (s *Stack) Pop() error {
 	return s.list.RemoveLast()
 }
+
+func (s *Stack) Peek() (error, interface{}) {
+	return s.list.Tail()
+}
