@@ -137,3 +137,27 @@ func (dll *DoublyLinkedList) RemoveFirst() error {
 
 	return nil
 }
+
+func (dll *DoublyLinkedList) RemoveLast() error {
+	switch dll.size {
+	case 0:
+		return errors.New("can't remove from empty doubly linked list")
+	case 1:
+		dll.tail.value = nil
+		dll.tail = nil
+		dll.head = nil
+	case 2:
+		dll.tail.value = nil
+		dll.tail = dll.head
+		dll.tail.prev = nil
+		dll.tail.next = nil
+	default:
+		dll.tail.value = nil
+		dll.tail = dll.tail.prev
+		dll.tail.next = nil
+	}
+
+	dll.size -= 1
+
+	return nil
+}
