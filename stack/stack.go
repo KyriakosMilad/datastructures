@@ -25,3 +25,7 @@ func (s *Stack) Peek() (error, interface{}) {
 func (s *Stack) Size() int {
 	return s.list.Size()
 }
+
+func (s *Stack) IsEmpty() bool {
+	return s.list.IsEmpty()
+}

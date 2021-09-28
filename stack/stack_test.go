@@ -79,3 +79,32 @@ func TestStack_Size(t *testing.T) {
 		}
 	})
 }
+
+func TestStack_IsEmpty(t *testing.T) {
+	tests := []struct {
+		name string
+		want bool
+	}{
+		{
+			name: "check if empty stack is empty",
+			want: true,
+		},
+		{
+			name: "check if stack is empty",
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := New()
+
+			if !tt.want {
+				s.Push(2)
+			}
+
+			if got := s.IsEmpty(); got != tt.want {
+				t.Errorf("IsEmpty() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
