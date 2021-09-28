@@ -9,3 +9,7 @@ type Stack struct {
 func New() *Stack {
 	return &Stack{&doublylinkedlist.DoublyLinkedList{}}
 }
+
+func (s *Stack) Push(value interface{}) {
+	s.list.AddLast(value)
+}

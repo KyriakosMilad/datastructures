@@ -12,3 +12,20 @@ func TestStack_New(t *testing.T) {
 		}
 	})
 }
+
+func TestStack_Push(t *testing.T) {
+	t.Run("test adding element to the stack", func(t *testing.T) {
+		s := New()
+
+		val := 2
+		s.Push(val)
+		err, got := s.list.Tail()
+
+		if err != nil {
+			t.Errorf("Push() gotError = %v", err)
+		}
+		if got != val {
+			t.Errorf("Push() got = %v, want %v", got, val)
+		}
+	})
+}
