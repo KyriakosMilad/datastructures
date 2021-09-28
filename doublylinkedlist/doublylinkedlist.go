@@ -161,3 +161,27 @@ func (dll *DoublyLinkedList) RemoveLast() error {
 
 	return nil
 }
+
+func (dll *DoublyLinkedList) Remove(node *Node) error {
+	if !dll.ContainsNode(node) {
+		return errors.New("this node does not belong to this DoublyLinkedList")
+	}
+
+	if node.prev == nil {
+		return dll.RemoveFirst()
+	}
+	if node.next == nil {
+		return dll.RemoveLast()
+	}
+
+	node.prev.next = node.next
+	node.next.prev = node.prev
+
+	node.next = nil
+	node.prev = nil
+	node.value = nil
+
+	dll.size -= 1
+
+	return nil
+}
