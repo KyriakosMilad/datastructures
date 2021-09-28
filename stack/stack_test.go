@@ -29,3 +29,22 @@ func TestStack_Push(t *testing.T) {
 		}
 	})
 }
+
+func TestStack_Pop(t *testing.T) {
+	t.Run("test removing element from the stack", func(t *testing.T) {
+		s := New()
+
+		val := 2
+		s.Push(val)
+
+		err := s.Pop()
+		if err != nil {
+			t.Errorf("Pop() gotError = %v", err)
+		}
+
+		err, _ = s.list.Tail()
+		if err == nil {
+			t.Errorf("Pop() not working, can not remove element from the Stack")
+		}
+	})
+}

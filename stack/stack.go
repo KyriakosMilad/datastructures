@@ -13,3 +13,7 @@ func New() *Stack {
 func (s *Stack) Push(value interface{}) {
 	s.list.AddLast(value)
 }
+
+func (s *Stack) Pop() error {
+	return s.list.RemoveLast()
+}
