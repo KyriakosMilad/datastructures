@@ -23,3 +23,7 @@ func (q *Queue) Dequeue() error {
 func (q *Queue) Peek() (error, interface{}) {
 	return q.list.Tail()
 }
+
+func (q *Queue) Size() int {
+	return q.list.Size()
+}

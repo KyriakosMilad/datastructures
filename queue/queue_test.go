@@ -60,3 +60,14 @@ func TestQueue_Peek(t *testing.T) {
 		}
 	})
 }
+
+func TestQueue_Size(t *testing.T) {
+	t.Run("test get the size of the queue", func(t *testing.T) {
+		q := New(0)
+
+		size := q.Size()
+		if size != 1 {
+			t.Errorf("Size() not working, got = %v, want = %v", size, 1)
+		}
+	})
+}
