@@ -19,3 +19,7 @@ func (q *Queue) Enqueue(val interface{}) {
 func (q *Queue) Dequeue() error {
 	return q.list.RemoveFirst()
 }
+
+func (q *Queue) Peek() (error, interface{}) {
+	return q.list.Tail()
+}

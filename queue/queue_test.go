@@ -45,3 +45,18 @@ func TestQueue_Dequeue(t *testing.T) {
 		}
 	})
 }
+
+func TestQueue_Peek(t *testing.T) {
+	t.Run("test get last element from the queue", func(t *testing.T) {
+		val := 4
+		q := New(val)
+
+		err, lastElement := q.Peek()
+		if err != nil {
+			t.Errorf("Peek() gotError = %v", err)
+		}
+		if lastElement != val {
+			t.Errorf("Peek() not working, got = %v, want = %v", lastElement, val)
+		}
+	})
+}
