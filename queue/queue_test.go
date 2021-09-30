@@ -12,3 +12,20 @@ func TestQueue_New(t *testing.T) {
 		}
 	})
 }
+
+func TestQueue_Enqueue(t *testing.T) {
+	t.Run("test enqueue element to the queue", func(t *testing.T) {
+		q := New(1)
+
+		val := 2
+		q.Enqueue(val)
+		err, got := q.list.Tail()
+
+		if err != nil {
+			t.Errorf("Enqueue() gotError = %v", err)
+		}
+		if got != val {
+			t.Errorf("Enqueue() got = %v, want %v", got, val)
+		}
+	})
+}
