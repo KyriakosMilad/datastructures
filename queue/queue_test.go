@@ -29,3 +29,19 @@ func TestQueue_Enqueue(t *testing.T) {
 		}
 	})
 }
+
+func TestQueue_Dequeue(t *testing.T) {
+	t.Run("test dequeue element from the queue", func(t *testing.T) {
+		q := New(1)
+
+		err := q.Dequeue()
+		if err != nil {
+			t.Errorf("Dequeue() gotError = %v", err)
+		}
+
+		err, _ = q.list.Tail()
+		if err == nil {
+			t.Errorf("Dequeue() not working, can not dequeue element from the Queue")
+		}
+	})
+}

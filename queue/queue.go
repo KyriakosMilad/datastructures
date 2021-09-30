@@ -15,3 +15,7 @@ func New(val interface{}) *Queue {
 func (q *Queue) Enqueue(val interface{}) {
 	q.list.AddLast(val)
 }
+
+func (q *Queue) Dequeue() error {
+	return q.list.RemoveFirst()
+}
