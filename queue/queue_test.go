@@ -71,3 +71,35 @@ func TestQueue_Size(t *testing.T) {
 		}
 	})
 }
+
+func TestQueue_IsEmpty(t *testing.T) {
+	tests := []struct {
+		name string
+		want bool
+	}{
+		{
+			name: "check if empty queue is empty",
+			want: true,
+		},
+		{
+			name: "check if queue is empty",
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			q := New(0)
+
+			if tt.want {
+				err := q.list.RemoveFirst()
+				if err != nil {
+					t.Errorf("IsEmpty() error: %v", err)
+				}
+			}
+
+			if got := q.IsEmpty(); got != tt.want {
+				t.Errorf("IsEmpty() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

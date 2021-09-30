@@ -27,3 +27,7 @@ func (q *Queue) Peek() (error, interface{}) {
 func (q *Queue) Size() int {
 	return q.list.Size()
 }
+
+func (q *Queue) IsEmpty() bool {
+	return q.list.Size() == 0
+}
