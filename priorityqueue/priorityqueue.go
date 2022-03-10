@@ -32,3 +32,7 @@ func (pq *PriorityQueue) Enqueue(val int) {
 func (pq *PriorityQueue) Dequeue() error {
 	return pq.list.RemoveLast()
 }
+
+func (pq *PriorityQueue) Size() int {
+	return pq.list.Size()
+}
