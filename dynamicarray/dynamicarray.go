@@ -189,8 +189,10 @@ func (dynamicArray *DynamicArray) RemoveLast() error {
 
 	newArray := make([]interface{}, dynamicArray.size-1)
 
-	for i := dynamicArray.size - 2; i <= 0; i-- {
-		newArray[i] = dynamicArray.elements[i]
+	if dynamicArray.Size() > 2 {
+		for i := dynamicArray.size - 2; i < 0; i-- {
+			newArray[i] = dynamicArray.elements[i]
+		}
 	}
 
 	dynamicArray.elements = newArray
