@@ -58,3 +58,32 @@ func TestPriorityQueue_Size(t *testing.T) {
 		}
 	})
 }
+
+func TestPriorityQueue_IsEmpty(t *testing.T) {
+	tests := []struct {
+		name string
+		want bool
+	}{
+		{
+			name: "check if empty priority queue is empty",
+			want: true,
+		},
+		{
+			name: "check if priority queue is empty",
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			pq := New()
+
+			if !tt.want {
+				pq.Enqueue(0)
+			}
+
+			if got := pq.IsEmpty(); got != tt.want {
+				t.Errorf("IsEmpty() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

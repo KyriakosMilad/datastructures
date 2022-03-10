@@ -36,3 +36,7 @@ func (pq *PriorityQueue) Dequeue() error {
 func (pq *PriorityQueue) Size() int {
 	return pq.list.Size()
 }
+
+func (pq *PriorityQueue) IsEmpty() bool {
+	return pq.list.IsEmpty()
+}
