@@ -29,3 +29,20 @@ func TestPriorityQueue_Enqueue(t *testing.T) {
 		}
 	})
 }
+
+func TestPriorityQueue_Dequeue(t *testing.T) {
+	t.Run("test dequeue element from the priority queue", func(t *testing.T) {
+		pq := New()
+		pq.Enqueue(1)
+
+		err := pq.Dequeue()
+		if err != nil {
+			t.Errorf("Dequeue() gotError = %v", err)
+		}
+
+		err, _ = pq.list.Get(0)
+		if err == nil {
+			t.Errorf("Dequeue() not working, can not dequeue element from the PriorityQueue")
+		}
+	})
+}

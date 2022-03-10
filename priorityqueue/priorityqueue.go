@@ -28,3 +28,7 @@ func (pq *PriorityQueue) Enqueue(val int) {
 	}
 	pq.list.Append(traverser)
 }
+
+func (pq *PriorityQueue) Dequeue() error {
+	return pq.list.RemoveLast()
+}
