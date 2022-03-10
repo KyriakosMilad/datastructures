@@ -87,3 +87,19 @@ func TestPriorityQueue_IsEmpty(t *testing.T) {
 		})
 	}
 }
+
+func TestPriorityQueue_Peek(t *testing.T) {
+	t.Run("test get last element from the priority queue", func(t *testing.T) {
+		val := 4
+		pq := New()
+		pq.Enqueue(val)
+
+		err, lastElement := pq.Peek()
+		if err != nil {
+			t.Errorf("Peek() gotError = %v", err)
+		}
+		if lastElement != val {
+			t.Errorf("Peek() not working, got = %v, want = %v", lastElement, val)
+		}
+	})
+}
