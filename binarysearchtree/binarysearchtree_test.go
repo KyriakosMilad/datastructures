@@ -5,6 +5,40 @@ import (
 	"testing"
 )
 
+// tree example to use with all tests
+//               25
+//      20               36
+//   10    22         30    40
+//  5  12           28    38  48
+var binarysearchtree = BinarySearchTree{
+	root: &node{
+		value: 25,
+		right: &node{
+			value: 36,
+			left: &node{
+				value: 30,
+				left: &node{
+					value: 28,
+				},
+			},
+			right: &node{
+				value: 40,
+				left:  &node{value: 38},
+				right: &node{value: 48},
+			},
+		},
+		left: &node{
+			value: 20,
+			left: &node{
+				value: 10,
+				left:  &node{value: 5},
+				right: &node{value: 12},
+			},
+			right: &node{value: 22},
+		},
+	},
+}
+
 func TestNew(t *testing.T) {
 	n := &node{value: 3}
 	type args struct {
