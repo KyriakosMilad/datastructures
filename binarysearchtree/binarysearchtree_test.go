@@ -33,6 +33,7 @@ var binarysearchtree = BinarySearchTree{
 				value: 10,
 				left:  &node{value: 5},
 				right: &node{value: 12},
+				count: 1,
 			},
 			right: &node{value: 22},
 		},
@@ -63,5 +64,27 @@ func TestNew(t *testing.T) {
 				t.Errorf("New() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestBinarySearchTree_Insert(t *testing.T) {
+	bstexample := &binarysearchtree
+	bst := &BinarySearchTree{}
+	bst.Insert(25)
+	bst.Insert(20)
+	bst.Insert(10)
+	bst.Insert(22)
+	bst.Insert(5)
+	bst.Insert(12)
+	bst.Insert(36)
+	bst.Insert(30)
+	bst.Insert(28)
+	bst.Insert(40)
+	bst.Insert(38)
+	bst.Insert(48)
+	bst.Insert(10)
+
+	if !reflect.DeepEqual(bst, bstexample) {
+		t.Errorf("New() = %v, want %v", bst, bstexample)
 	}
 }
