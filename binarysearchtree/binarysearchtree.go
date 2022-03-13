@@ -10,3 +10,7 @@ type node struct {
 type BinarySearchTree struct {
 	root *node
 }
+
+func New(n *node) *BinarySearchTree {
+	return &BinarySearchTree{root: n}
+}
