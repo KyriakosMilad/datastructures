@@ -54,6 +54,10 @@ func (bst *BinarySearchTree) Insert(val int) {
 	}
 }
 
+/** todo
+* clean code !!
+ */
+
 func (bst *BinarySearchTree) Remove(val int) error {
 	err := fmt.Errorf("no node found with value %v", val)
 	if bst.root == nil {
@@ -129,3 +133,7 @@ func (bst *BinarySearchTree) Remove(val int) error {
 
 	return err
 }
+
+/** todo
+* create contains method to check if value exist in binarysearchtree
+ */
