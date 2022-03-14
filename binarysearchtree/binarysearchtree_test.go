@@ -5,41 +5,6 @@ import (
 	"testing"
 )
 
-// tree example to use with all tests
-//               25
-//      20               36
-//   10    22         30    40
-//  5  12           28    38  48
-var binarysearchtree = BinarySearchTree{
-	root: &node{
-		value: 25,
-		right: &node{
-			value: 36,
-			left: &node{
-				value: 30,
-				left: &node{
-					value: 28,
-				},
-			},
-			right: &node{
-				value: 40,
-				left:  &node{value: 38},
-				right: &node{value: 48},
-			},
-		},
-		left: &node{
-			value: 20,
-			left: &node{
-				value: 10,
-				left:  &node{value: 5},
-				right: &node{value: 12},
-				count: 1,
-			},
-			right: &node{value: 22},
-		},
-	},
-}
-
 func TestNew(t *testing.T) {
 	n := &node{value: 3}
 	type args struct {
@@ -68,7 +33,38 @@ func TestNew(t *testing.T) {
 }
 
 func TestBinarySearchTree_Insert(t *testing.T) {
-	bstexample := &binarysearchtree
+	// tree example to use with test
+	//               25
+	//      20               36
+	//   10    22         30    40
+	//  5  12           28    38  48
+	bstInsertExample := &BinarySearchTree{
+		root: &node{
+			value: 25,
+			right: &node{
+				value: 36,
+				left: &node{
+					value: 30,
+					left:  &node{value: 28},
+				},
+				right: &node{
+					value: 40,
+					left:  &node{value: 38},
+					right: &node{value: 48},
+				},
+			},
+			left: &node{
+				value: 20,
+				left: &node{
+					value: 10,
+					left:  &node{value: 5},
+					right: &node{value: 12},
+					count: 1,
+				},
+				right: &node{value: 22},
+			},
+		},
+	}
 	bst := &BinarySearchTree{}
 	bst.Insert(25)
 	bst.Insert(20)
@@ -84,7 +80,7 @@ func TestBinarySearchTree_Insert(t *testing.T) {
 	bst.Insert(48)
 	bst.Insert(10)
 
-	if !reflect.DeepEqual(bst, bstexample) {
-		t.Errorf("New() = %v, want %v", bst, bstexample)
+	if !reflect.DeepEqual(bst, bstInsertExample) {
+		t.Errorf("Insert() = %v, want %v", bst, bstInsertExample)
 	}
 }
