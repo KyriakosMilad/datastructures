@@ -809,3 +809,68 @@ func TestBinarySearchTree_Remove(t *testing.T) {
 		})
 	}
 }
+
+func TestBinarySearchTree_Contains(t *testing.T) {
+	bst := &BinarySearchTree{
+		root: &node{
+			value: 25,
+			right: &node{
+				value: 36,
+				left: &node{
+					value: 30,
+					left:  &node{value: 28},
+				},
+				right: &node{
+					value: 40,
+					left:  &node{value: 38},
+					right: &node{
+						value: 48,
+						left:  &node{value: 46},
+					},
+				},
+			},
+			left: &node{
+				value: 20,
+				left:  &node{value: 5},
+				right: &node{value: 22},
+			},
+		},
+	}
+
+	type args struct {
+		val int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "check if value exists (root)",
+			args: args{val: 25},
+			want: true,
+		},
+		{
+			name: "check if value exists (on the left)",
+			args: args{val: 5},
+			want: true,
+		},
+		{
+			name: "check if value exists (on the right)",
+			args: args{val: 38},
+			want: true,
+		},
+		{
+			name: "check if non-exist value returns false",
+			args: args{val: 100},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := bst.Contains(tt.args.val); got != tt.want {
+				t.Errorf("Contains() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

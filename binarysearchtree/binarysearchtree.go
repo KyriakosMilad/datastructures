@@ -134,6 +134,21 @@ func (bst *BinarySearchTree) Remove(val int) error {
 	return err
 }
 
-/** todo
-* create contains method to check if value exist in binarysearchtree
- */
+func (bst *BinarySearchTree) Contains(val int) bool {
+	if bst.root == nil {
+		return false
+	}
+
+	current := bst.root
+	for current != nil {
+		if val == current.value {
+			return true
+		} else if val > current.value {
+			current = current.right
+		} else if val < current.value {
+			current = current.left
+		}
+	}
+
+	return false
+}
