@@ -57,7 +57,7 @@ func (bst *BinarySearchTree) Insert(val int) {
 
 /** todo
 * clean code !!
-* do it recursively would be a lot better
+* doing it recursively would be a lot better
  */
 
 func (bst *BinarySearchTree) Remove(val int) error {
