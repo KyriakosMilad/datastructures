@@ -2,6 +2,7 @@ package binarysearchtree
 
 import (
 	"fmt"
+	"github.com/KyriakosMilad/datastructures/queue"
 )
 
 type node struct {
@@ -56,6 +57,7 @@ func (bst *BinarySearchTree) Insert(val int) {
 
 /** todo
 * clean code !!
+* do it recursively would be a lot better
  */
 
 func (bst *BinarySearchTree) Remove(val int) error {
@@ -151,4 +153,33 @@ func (bst *BinarySearchTree) Contains(val int) bool {
 	}
 
 	return false
+}
+
+func (bst *BinarySearchTree) BreadthFirstSearch() []int {
+	if bst.root == nil {
+		return []int{}
+	}
+
+	q := queue.New(bst.root)
+	visited := []int{}
+
+	for q.Size() > 0 {
+		_, v := q.First()
+		if n, ok := v.(*node); ok {
+			visited = append(visited, n.value)
+
+			if n.right != nil {
+				q.Enqueue(n.right)
+			}
+			if n.left != nil {
+				q.Enqueue(n.left)
+			}
+
+			q.Dequeue()
+		} else {
+			panic(fmt.Errorf("%v is not a node", v))
+		}
+	}
+
+	return visited
 }
