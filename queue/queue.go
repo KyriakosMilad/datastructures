@@ -24,6 +24,10 @@ func (q *Queue) Last() (error, interface{}) {
 	return q.list.Tail()
 }
 
+func (q *Queue) First() (error, interface{}) {
+	return q.list.Head()
+}
+
 func (q *Queue) Size() int {
 	return q.list.Size()
 }

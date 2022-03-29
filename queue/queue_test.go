@@ -61,6 +61,21 @@ func TestQueue_Last(t *testing.T) {
 	})
 }
 
+func TestQueue_First(t *testing.T) {
+	t.Run("test get first element from the queue", func(t *testing.T) {
+		val := 4
+		q := New(val)
+
+		err, lastElement := q.First()
+		if err != nil {
+			t.Errorf("First() gotError = %v", err)
+		}
+		if lastElement != val {
+			t.Errorf("First() not working, got = %v, want = %v", lastElement, val)
+		}
+	})
+}
+
 func TestQueue_Size(t *testing.T) {
 	t.Run("test get the size of the queue", func(t *testing.T) {
 		q := New(0)
