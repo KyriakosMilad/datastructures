@@ -42,9 +42,9 @@ func (pq *PriorityQueue) IsEmpty() bool {
 	return pq.list.IsEmpty()
 }
 
-func (pq *PriorityQueue) Peek() (error, interface{}) {
+func (pq *PriorityQueue) Last() (error, interface{}) {
 	if pq.IsEmpty() {
-		return errors.New("can't get last element from empty pririty queue"), 0
+		return errors.New("can't get last element from empty priority queue"), 0
 	}
 	return nil, pq.list.Elements()[pq.Size()-1]
 }
