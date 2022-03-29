@@ -20,7 +20,7 @@ func (q *Queue) Dequeue() error {
 	return q.list.RemoveFirst()
 }
 
-func (q *Queue) Peek() (error, interface{}) {
+func (q *Queue) Last() (error, interface{}) {
 	return q.list.Tail()
 }
 
