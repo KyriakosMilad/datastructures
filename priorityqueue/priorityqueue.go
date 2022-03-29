@@ -48,3 +48,10 @@ func (pq *PriorityQueue) Last() (error, interface{}) {
 	}
 	return nil, pq.list.Elements()[pq.Size()-1]
 }
+
+func (pq *PriorityQueue) First() (error, interface{}) {
+	if pq.IsEmpty() {
+		return errors.New("can't get first element from empty priority queue"), 0
+	}
+	return nil, pq.list.Elements()[0]
+}

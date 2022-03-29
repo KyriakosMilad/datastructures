@@ -103,3 +103,19 @@ func TestPriorityQueue_Last(t *testing.T) {
 		}
 	})
 }
+
+func TestPriorityQueue_First(t *testing.T) {
+	t.Run("test get last element from the priority queue", func(t *testing.T) {
+		val := 4
+		pq := New()
+		pq.Enqueue(val)
+
+		err, lastElement := pq.Last()
+		if err != nil {
+			t.Errorf("Last() gotError = %v", err)
+		}
+		if lastElement != val {
+			t.Errorf("Last() not working, got = %v, want = %v", lastElement, val)
+		}
+	})
+}
