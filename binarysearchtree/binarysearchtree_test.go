@@ -1000,3 +1000,66 @@ func TestBinarySearchTree_PreOrderTraversal(t *testing.T) {
 		})
 	}
 }
+
+func TestBinarySearchTree_PostOrderTraversal(t *testing.T) {
+	type fields struct {
+		root *node
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   []int
+	}{
+		{
+			//               25
+			//      20               36
+			//   10    22         30       40
+			//  5  12           28      38     48
+			//        14                     46
+			name: "test PostOrderTraversal",
+			fields: fields{
+				root: &node{
+					value: 25,
+					right: &node{
+						value: 36,
+						left: &node{
+							value: 30,
+							left:  &node{value: 28},
+						},
+						right: &node{
+							value: 40,
+							left:  &node{value: 38},
+							right: &node{
+								value: 48,
+								left:  &node{value: 46},
+							},
+						},
+					},
+					left: &node{
+						value: 20,
+						left: &node{
+							value: 10,
+							left:  &node{value: 5},
+							right: &node{
+								value: 12,
+								right: &node{value: 14},
+							},
+						},
+						right: &node{value: 22},
+					},
+				},
+			},
+			want: []int{46, 48, 38, 40, 28, 30, 36, 22, 14, 12, 5, 10, 20, 25},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			bst := &BinarySearchTree{
+				root: tt.fields.root,
+			}
+			if got := bst.PostOrderTraversal(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PostOrderTraversal() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
