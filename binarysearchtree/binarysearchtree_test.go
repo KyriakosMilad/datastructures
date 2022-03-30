@@ -937,3 +937,66 @@ func TestBinarySearchTree_BreadthFirstSearch(t *testing.T) {
 		})
 	}
 }
+
+func TestBinarySearchTree_PreOrderTraversal(t *testing.T) {
+	type fields struct {
+		root *node
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   []int
+	}{
+		{
+			//               25
+			//      20               36
+			//   10    22         30       40
+			//  5  12           28      38     48
+			//        14                     46
+			name: "test PreOrderTraversal",
+			fields: fields{
+				root: &node{
+					value: 25,
+					right: &node{
+						value: 36,
+						left: &node{
+							value: 30,
+							left:  &node{value: 28},
+						},
+						right: &node{
+							value: 40,
+							left:  &node{value: 38},
+							right: &node{
+								value: 48,
+								left:  &node{value: 46},
+							},
+						},
+					},
+					left: &node{
+						value: 20,
+						left: &node{
+							value: 10,
+							left:  &node{value: 5},
+							right: &node{
+								value: 12,
+								right: &node{value: 14},
+							},
+						},
+						right: &node{value: 22},
+					},
+				},
+			},
+			want: []int{25, 36, 40, 48, 46, 38, 30, 28, 20, 22, 10, 12, 14, 5},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			bst := &BinarySearchTree{
+				root: tt.fields.root,
+			}
+			if got := bst.PreOrderTraversal(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PreOrderTraversal() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

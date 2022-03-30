@@ -183,3 +183,23 @@ func (bst *BinarySearchTree) BreadthFirstSearch() []int {
 
 	return visited
 }
+
+var visited []int
+
+func preOrderVisit(n *node) {
+	visited = append(visited, n.value)
+	if n.right != nil {
+		preOrderVisit(n.right)
+	}
+	if n.left != nil {
+		preOrderVisit(n.left)
+	}
+}
+
+func (bst *BinarySearchTree) PreOrderTraversal() []int {
+	if bst.root == nil {
+		return []int{}
+	}
+	preOrderVisit(bst.root)
+	return visited
+}
