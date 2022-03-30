@@ -875,7 +875,7 @@ func TestBinarySearchTree_Contains(t *testing.T) {
 	}
 }
 
-func TestBinarySearchTree_BreadthFirstSearch(t *testing.T) {
+func TestBinarySearchTree_BreadthFirstTraversal(t *testing.T) {
 	type fields struct {
 		root *node
 	}
@@ -890,7 +890,7 @@ func TestBinarySearchTree_BreadthFirstSearch(t *testing.T) {
 			//   10    22         30       40
 			//  5  12           28      38     48
 			//        14                     46
-			name: "test BreadthFirstSearch",
+			name: "test BreadthFirstTraversal",
 			fields: fields{
 				root: &node{
 					value: 25,
@@ -931,8 +931,8 @@ func TestBinarySearchTree_BreadthFirstSearch(t *testing.T) {
 			bst := &BinarySearchTree{
 				root: tt.fields.root,
 			}
-			if got := bst.BreadthFirstSearch(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("BreadthFirstSearch() = %v, want %v", got, tt.want)
+			if got := bst.BreadthFirstTraversal(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("BreadthFirstTraversal() = %v, want %v", got, tt.want)
 			}
 		})
 	}

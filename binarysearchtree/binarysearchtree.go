@@ -155,13 +155,13 @@ func (bst *BinarySearchTree) Contains(val int) bool {
 	return false
 }
 
-func (bst *BinarySearchTree) BreadthFirstSearch() []int {
+func (bst *BinarySearchTree) BreadthFirstTraversal() []int {
 	if bst.root == nil {
 		return []int{}
 	}
 
 	q := queue.New(bst.root)
-	visited := []int{}
+	var visited []int
 
 	for q.Size() > 0 {
 		_, v := q.First()
