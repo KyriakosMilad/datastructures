@@ -223,3 +223,23 @@ func (bst *BinarySearchTree) PostOrderTraversal() []int {
 	postOrderVisit(bst.root)
 	return postOrderVisited
 }
+
+var inOrderVisited []int
+
+func inOrderVisit(n *node) {
+	if n.right != nil {
+		inOrderVisit(n.right)
+	}
+	inOrderVisited = append(inOrderVisited, n.value)
+	if n.left != nil {
+		inOrderVisit(n.left)
+	}
+}
+
+func (bst *BinarySearchTree) InOrderTraversal() []int {
+	if bst.root == nil {
+		return []int{}
+	}
+	inOrderVisit(bst.root)
+	return inOrderVisited
+}
