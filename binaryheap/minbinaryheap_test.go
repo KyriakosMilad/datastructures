@@ -78,3 +78,75 @@ func TestMinBinaryHeap_Insert(t *testing.T) {
 		})
 	}
 }
+
+func TestMinBinaryHeap_bubbleDown(t *testing.T) {
+	type fields struct {
+		list []int
+	}
+	type args struct {
+		idx int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   []int
+	}{
+		{
+			name: "test bubbledown",
+			fields: fields{
+				list: []int{9, 2, 1, 4, 5, 6, 3},
+			},
+			args: args{
+				idx: 0,
+			},
+			want: []int{1, 2, 3, 4, 5, 6, 9},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mbh := &MinBinaryHeap{
+				list: tt.fields.list,
+			}
+			mbh.bubbleDown(tt.args.idx)
+			if !reflect.DeepEqual(mbh.list, tt.want) {
+				t.Errorf("bubbleDown() = %v, want %v", mbh.list, tt.want)
+			}
+		})
+	}
+}
+
+func TestMinBinaryHeap_ExtractMin(t *testing.T) {
+	type fields struct {
+		list []int
+	}
+	tests := []struct {
+		name       string
+		fields     fields
+		want       int
+		wantedList []int
+	}{
+		{
+			name: "test ExtractMin",
+			fields: fields{
+				list: []int{1, 2, 3, 4, 5, 6, 9},
+			},
+			want:       1,
+			wantedList: []int{2, 4, 3, 9, 5, 6},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mbh := &MinBinaryHeap{
+				list: tt.fields.list,
+			}
+			min := mbh.ExtractMin()
+			if !reflect.DeepEqual(min, tt.want) {
+				t.Errorf("ExtractMin() = %v, want %v", min, tt.want)
+			}
+			if !reflect.DeepEqual(mbh.list, tt.wantedList) {
+				t.Errorf("ExtractMin() list = %v, want %v", mbh.list, tt.wantedList)
+			}
+		})
+	}
+}
