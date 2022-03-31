@@ -127,14 +127,16 @@ func TestMaxBinaryHeap_ExtractMax(t *testing.T) {
 		list []int
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		want   []int
+		name       string
+		fields     fields
+		wantedList []int
+		want       int
 	}{
 		{
-			name:   "test ExtractMax",
-			fields: fields{list: []int{55, 39, 41, 18, 27, 12, 33}},
-			want:   []int{41, 39, 33, 18, 27, 12},
+			name:       "test ExtractMax",
+			fields:     fields{list: []int{55, 39, 41, 18, 27, 12, 33}},
+			wantedList: []int{41, 39, 33, 18, 27, 12},
+			want:       55,
 		},
 	}
 	for _, tt := range tests {
@@ -142,9 +144,12 @@ func TestMaxBinaryHeap_ExtractMax(t *testing.T) {
 			mbh := &MaxBinaryHeap{
 				list: tt.fields.list,
 			}
-			mbh.ExtractMax()
-			if !reflect.DeepEqual(mbh.list, tt.want) {
-				t.Errorf("ExtractMax() = %v, want %v", mbh.list, tt.want)
+			max := mbh.ExtractMax()
+			if !reflect.DeepEqual(max, tt.want) {
+				t.Errorf("ExtractMax() = %v, want %v", max, tt.want)
+			}
+			if !reflect.DeepEqual(mbh.list, tt.wantedList) {
+				t.Errorf("ExtractMax() list = %v, want %v", mbh.list, tt.wantedList)
 			}
 		})
 	}
