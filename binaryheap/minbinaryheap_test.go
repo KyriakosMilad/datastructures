@@ -125,6 +125,7 @@ func TestMinBinaryHeap_ExtractMin(t *testing.T) {
 		fields     fields
 		want       int
 		wantedList []int
+		wantErr    bool
 	}{
 		{
 			name: "test ExtractMin",
@@ -133,6 +134,7 @@ func TestMinBinaryHeap_ExtractMin(t *testing.T) {
 			},
 			want:       1,
 			wantedList: []int{2, 4, 3, 9, 5, 6},
+			wantErr:    false,
 		},
 	}
 	for _, tt := range tests {
@@ -140,7 +142,10 @@ func TestMinBinaryHeap_ExtractMin(t *testing.T) {
 			mbh := &MinBinaryHeap{
 				list: tt.fields.list,
 			}
-			min := mbh.ExtractMin()
+			min, err := mbh.ExtractMin()
+			if err != nil != tt.wantErr {
+				t.Errorf("ExtractMax() err = %v, wantErr %v", err, tt.wantErr)
+			}
 			if !reflect.DeepEqual(min, tt.want) {
 				t.Errorf("ExtractMin() = %v, want %v", min, tt.want)
 			}

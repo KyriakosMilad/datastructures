@@ -1,5 +1,7 @@
 package binaryheap
 
+import "errors"
+
 type MinBinaryHeap struct {
 	list []int
 }
@@ -39,13 +41,13 @@ func (mbh *MinBinaryHeap) bubbleDown(idx int) {
 	}
 }
 
-func (mbh *MinBinaryHeap) ExtractMin() int {
+func (mbh *MinBinaryHeap) ExtractMin() (int, error) {
 	if len(mbh.list) == 0 {
-		return 0
+		return 0, errors.New("can't extract min from empty heap")
 	}
 	min := mbh.list[0]
 	mbh.list[0] = mbh.list[len(mbh.list)-1]
 	mbh.list = mbh.list[:len(mbh.list)-1]
 	mbh.bubbleDown(0)
-	return min
+	return min, nil
 }
