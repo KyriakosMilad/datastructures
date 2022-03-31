@@ -86,3 +86,66 @@ func TestMaxBinaryHeap_Insert(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxBinaryHeap_bubbleDown(t *testing.T) {
+	type fields struct {
+		list []int
+	}
+	type args struct {
+		idx int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   []int
+	}{
+		{
+			name:   "test bubbleDown",
+			fields: fields{list: []int{33, 39, 41, 18, 27, 12}},
+			args: args{
+				idx: 0,
+			},
+			want: []int{41, 39, 33, 18, 27, 12},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mbh := &MaxBinaryHeap{
+				list: tt.fields.list,
+			}
+			mbh.bubbleDown(tt.args.idx)
+			if !reflect.DeepEqual(mbh.list, tt.want) {
+				t.Errorf("bubbleDown() = %v, want %v", mbh.list, tt.want)
+			}
+		})
+	}
+}
+
+func TestMaxBinaryHeap_ExtractMax(t *testing.T) {
+	type fields struct {
+		list []int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   []int
+	}{
+		{
+			name:   "test ExtractMax",
+			fields: fields{list: []int{55, 39, 41, 18, 27, 12, 33}},
+			want:   []int{41, 39, 33, 18, 27, 12},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mbh := &MaxBinaryHeap{
+				list: tt.fields.list,
+			}
+			mbh.ExtractMax()
+			if !reflect.DeepEqual(mbh.list, tt.want) {
+				t.Errorf("ExtractMax() = %v, want %v", mbh.list, tt.want)
+			}
+		})
+	}
+}
