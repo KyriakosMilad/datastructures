@@ -46,7 +46,7 @@ func TestMaxBinaryHeap_bubbleUp(t *testing.T) {
 			}
 			mbh.bubbleUp(tt.args.idx)
 			if !reflect.DeepEqual(mbh.list, tt.want) {
-				t.Errorf("Inser() = %v, want %v", mbh.list, tt.want)
+				t.Errorf("bubbleUp() = %v, want %v", mbh.list, tt.want)
 			}
 		})
 	}
@@ -81,7 +81,7 @@ func TestMaxBinaryHeap_Insert(t *testing.T) {
 			}
 			mbh.Insert(tt.args.val)
 			if !reflect.DeepEqual(mbh.list, tt.want) {
-				t.Errorf("Inser() = %v, want %v", mbh.list, tt.want)
+				t.Errorf("Insert() = %v, want %v", mbh.list, tt.want)
 			}
 		})
 	}
