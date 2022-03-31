@@ -1,5 +1,7 @@
 package binaryheap
 
+import "errors"
+
 type MaxBinaryHeap struct {
 	list []int
 }
@@ -39,13 +41,13 @@ func (mbh *MaxBinaryHeap) bubbleDown(idx int) {
 	}
 }
 
-func (mbh *MaxBinaryHeap) ExtractMax() int {
+func (mbh *MaxBinaryHeap) ExtractMax() (int, error) {
 	if len(mbh.list) == 0 {
-		return 0
+		return 0, errors.New("can't extract max from empty heap")
 	}
 	max := mbh.list[0]
 	mbh.list[0] = mbh.list[len(mbh.list)-1]
 	mbh.list = mbh.list[:len(mbh.list)-1]
 	mbh.bubbleDown(0)
-	return max
+	return max, nil
 }
