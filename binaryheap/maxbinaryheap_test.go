@@ -159,3 +159,32 @@ func TestMaxBinaryHeap_ExtractMax(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxBinaryHeap_Size(t *testing.T) {
+	type fields struct {
+		list []int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   int
+	}{
+		{
+			name: "test get min binary heap size",
+			fields: fields{
+				list: []int{41, 39, 33, 18, 27, 12},
+			},
+			want: 6,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mbh := &MaxBinaryHeap{
+				list: tt.fields.list,
+			}
+			if got := mbh.Size(); got != tt.want {
+				t.Errorf("Size() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

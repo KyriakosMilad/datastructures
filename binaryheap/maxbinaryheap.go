@@ -51,3 +51,7 @@ func (mbh *MaxBinaryHeap) ExtractMax() (int, error) {
 	mbh.bubbleDown(0)
 	return max, nil
 }
+
+func (mbh *MaxBinaryHeap) Size() int {
+	return len(mbh.list)
+}
