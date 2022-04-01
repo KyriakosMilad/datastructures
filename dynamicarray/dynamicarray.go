@@ -187,15 +187,12 @@ func (dynamicArray *DynamicArray) RemoveLast() error {
 		return errors.New("cannot remove from empty array")
 	}
 
-	newArray := make([]interface{}, dynamicArray.size-1)
-
-	if dynamicArray.Size() > 2 {
-		for i := dynamicArray.size - 2; i < 0; i-- {
-			newArray[i] = dynamicArray.elements[i]
-		}
+	if dynamicArray.size > 0 {
+		dynamicArray.elements = dynamicArray.elements[:len(dynamicArray.elements)-1]
+	} else {
+		dynamicArray.elements = []interface{}{}
 	}
 
-	dynamicArray.elements = newArray
 	dynamicArray.size -= 1
 	dynamicArray.capacity = dynamicArray.size
 
