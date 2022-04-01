@@ -170,7 +170,7 @@ func TestMaxBinaryHeap_Size(t *testing.T) {
 		want   int
 	}{
 		{
-			name: "test get min binary heap size",
+			name: "test get max binary heap size",
 			fields: fields{
 				list: []int{41, 39, 33, 18, 27, 12},
 			},
