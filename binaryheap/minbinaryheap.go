@@ -51,3 +51,7 @@ func (mbh *MinBinaryHeap) ExtractMin() (int, error) {
 	mbh.bubbleDown(0)
 	return min, nil
 }
+
+func (mbh *MinBinaryHeap) Size() int {
+	return len(mbh.list)
+}

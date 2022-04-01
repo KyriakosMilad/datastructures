@@ -155,3 +155,32 @@ func TestMinBinaryHeap_ExtractMin(t *testing.T) {
 		})
 	}
 }
+
+func TestMinBinaryHeap_Size(t *testing.T) {
+	type fields struct {
+		list []int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   int
+	}{
+		{
+			name: "test get min binary heap size",
+			fields: fields{
+				list: []int{2, 4, 3, 9, 5, 6},
+			},
+			want: 6,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mbh := &MinBinaryHeap{
+				list: tt.fields.list,
+			}
+			if got := mbh.Size(); got != tt.want {
+				t.Errorf("Size() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
