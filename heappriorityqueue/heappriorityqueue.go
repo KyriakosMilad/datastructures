@@ -5,5 +5,9 @@ import (
 )
 
 type HeapPriorityQueue struct {
-	list binaryheap.MaxBinaryHeap
+	list *binaryheap.MaxBinaryHeap
+}
+
+func New() *HeapPriorityQueue {
+	return &HeapPriorityQueue{list: &binaryheap.MaxBinaryHeap{}}
 }
